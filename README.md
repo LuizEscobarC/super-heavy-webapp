@@ -6,6 +6,13 @@
   - sexta: peito e ombro
   - sabado: panturilha e abs
 CRUD de cadastro de treinos por dia, cada treino tem que ter um dia, e esses treinos tem um nome específico que seriam organizados.
+    exe: biceps: rosca direta (4x),
+      rosca martelo (4x),
+      rosca sentado,
+      rosca unilataeral na polia (4x),
+      biceeps isometria unilateral na polia martelo(2x) e
+      biceps isometria unilateral na polia(2x).
+    
     - tabelas:
 
       - workout-category (força, hipertrofia, resistencia, flexível)
