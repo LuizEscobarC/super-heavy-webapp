@@ -1,4 +1,5 @@
-# 1 - Quero cadastrar meus meu tipo de treinamento, por dia, o que eu faria, exemplo:
+# 1 - Etapa inicial - configuração
+* Quero cadastrar meus meu tipo de treinamento, por dia, o que eu faria, exemplo:
   - segunda: biceps
   - terça: quadriceps, posterior
   - quarta: costas e trapezio
@@ -6,36 +7,38 @@
   - sexta: peito e ombro
   - sabado: panturilha e abs
 CRUD de cadastro de treinos por dia, cada treino tem que ter um dia, e esses treinos tem um nome específico que seriam organizados.
-    exe: biceps: rosca direta (4x),
-      rosca martelo (4x),
-      rosca sentado,
-      rosca unilataeral na polia (4x),
-      biceeps isometria unilateral na polia martelo(2x) e
-      biceps isometria unilateral na polia(2x).
+    exemplo: 
+    * biceps:
+        - rosca direta (4x),
+        - rosca martelo (4x),
+        - rosca sentado (3x),
+        - rosca unilataeral na polia (4x),
+        - biceeps isometria unilateral na polia martelo(2x) e
+        - biceps isometria unilateral na polia(2x).
     
     - tabelas:
 
-      - workout-category (força, hipertrofia, resistencia, flexível)
+      * workout-category (força, hipertrofia, resistencia, flexível)
         - Quantidade de repeticões
         - Carga (maxima, media, baixa)
-      - week-days
+      * week-days
         - dias da semana
         - numero
         - label
-      - user-workout
+      * user-workout
         - workout_category_id
         - week_day_id
-      - user_workout_exercises
+      * user_workout_exercises
         - user_workout_id
         - exercise_id
         - initial_weight
         - actually_weight
-      - exercises
+      * exercises
         - photo
         - name
         - description
         - muscle_group_id
-      - muscle_group
+      * muscle_group
         - photo
         - name
         - description
@@ -50,6 +53,11 @@ CRUD de cadastro de treinos por dia, cada treino tem que ter um dia, e esses tre
 # 2 - Aao inves de personalizar por completo meu treino semanal eu poderia escolher treino pré programados por semana.
   - ABC, ABCD, ABCDE.
   - Poderia escolher treinos pré prontos para strongman, para volei, para queda de braços, para maromba, futebol...
+     - No MVP posso ter treino de força (pesquisar)
+     - Treino de resistência (pesqusiar)
+     - Treino de hipertrofia (ABC normal)
+  - Na tela inicial ao invez de cadastrar a personalizado escolher a opção de utilizar algo que já existe.
+
 # 3 - Após isso poderia escolher para meus treinos meu objetivo, força, resistencia, hipertrofia.
   - com isso minha evolução de carga seria com base no objetivo.
   - com isso minha repetições seriam com base no objetivo.
