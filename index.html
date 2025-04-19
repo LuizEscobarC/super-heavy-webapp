@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>SuperHeavy - Gerencie seus treinos específicos com IA</title>
-        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/styles.css">
     </head>
     <body>
         <header>
@@ -12,7 +12,7 @@
             <p>Gerencie seus treinos específicos com IA</p>
         </header>
 
-        <main>
+        <main> 
             <!-- Formulário de registro de treinos -->
              <section class="workout-form">
                 <h2>Registrar Treinos</h2>
@@ -51,12 +51,32 @@
                 </form>
              </section>
 
-             <section>
+             <section class="workout-list">
                 <h2>Meus Treinos</h2>
                 <div id="workouts-container">
-                    
+                    <div class="workout-item">
+                        <div class="workout-title">
+                            <h3>Nome do Treino</h3>
+                            <div class="workout-actions">
+                                <span class="workout-date">19/04/2025</span>
+                                <button class="delete-btn delete-workout" data-id="12345">Excluir</button>
+                            </div>
+                        </div>
+                        
+                        <div class="exercise-list">
+                            <div class="exercise-item">
+                                <strong>Supino Reto</strong>
+                                <div class="exercise-details">
+                                    <span>50kg</span> | 
+                                    <span>10 repetições</span> | 
+                                    <span>60 segundos de descanso</span>
+                                </div>
+                            </div>
+                            <!-- Mais exercícios aqui -->
+                        </div>
+                    </div>
                 </div>
-             </section>
+            </section>
         </main>
 
         <footer>
