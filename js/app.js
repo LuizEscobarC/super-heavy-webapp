@@ -106,8 +106,6 @@ function loadWorkouts() {
     }
 
     workouts.sort((a, b) => b.date - a.date);
-    console.log(workouts);
-
 
     workouts.forEach(workout => {
         const workoutElement = document.createElement('div');
