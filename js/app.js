@@ -98,6 +98,49 @@ function saveWorkout(event) {
 
 function loadWorkouts() {
     workoutsContainer.innerHTML = '';
-    workoutsContainer.innerHTML = '<p class="no-workouts">Você ainda não tem treinos salvos.</p>'
+    if (workouts.length < 0) {
+        workoutsContainer.innerHTML = '<p class="no-workouts">Você ainda não tem treinos salvos.</p>'
+        return;
+    }
 
+    workouts.sort((a, b) => b.date - a.date);
+    console.log(workouts);
+
+
+    workouts.forEach(workout => {
+        const workoutElement = document.createElement('div');
+        workoutElement.className = 'workout-item';
+
+        const workoutHeader = document.createElement('div');
+        workoutHeader.className = 'workout-title';
+        workoutHeader.innerHTML = `
+            <h3>${workout.name}</h3>
+            <div class="workout-actions">
+                <span class="workout-date">${workout.date}</span>
+                <button class="delete-btn delete-workout" data-id="${workout.id}">Excluir</button>
+            </div>
+        `;
+        workoutElement.appendChild(workoutHeader);
+
+        const exerciseList = document.createElement('div');
+        exerciseList.className = 'exercise-list';
+
+        workout.exercises.forEach(exercise => {
+            const exerciseItem = document.createElement('div');
+            exerciseItem.className = 'exercise-item';
+            exerciseItem.innerHTML = `
+                <strong>${exercise.name}</strong>
+                <div class="exercise-details">
+                    <span>${exercise.weight}kg</span> | 
+                    <span>${exercise.reps} repetições</span> | 
+                    <span>${exercise.rest} segundos de descanso</span>
+                </div>
+            `;
+
+            exerciseList.appendChild(exerciseItem);
+        });
+
+        workoutElement.appendChild(exerciseList);
+        workoutsContainer.appendChild(workoutElement);
+    });
 }
