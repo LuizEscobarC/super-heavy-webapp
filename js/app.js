@@ -142,5 +142,18 @@ function loadWorkouts() {
 
         workoutElement.appendChild(exerciseList);
         workoutsContainer.appendChild(workoutElement);
+
+        workoutElement.querySelector('.delete-workout').addEventListener('click', (e) => {
+            const workoutId = e.target.dataset.id;
+            deleteWorkout(workoutId);
+        });
     });
+}
+
+function deleteWorkout(workoutId) {
+    if (confirm('Tem certeza que deseja excluir este treino?')) {
+        workouts = workouts.filter(workout => workout.id !== workoutId);
+        localStorage.setItem('workouts', JSON.stringify(workouts));
+        loadWorkouts();
+    }
 }
