@@ -55,6 +55,7 @@ function saveWorkout(event) {
     event.preventDefault();
 
     const workoutName = workoutNameInput.value;
+    const workoutCategory = document.getElementById('workout-category').value;
 
     const exercisesEntries = document.querySelectorAll('.exercise-entry');
     const exercises = [];
@@ -73,6 +74,7 @@ function saveWorkout(event) {
     const workout = {
         id: uuidv4(),
         name: workoutName,
+        category: workoutCategory,
         date: new Date().toLocaleDateString(),
         exercises: exercises
     };
@@ -115,6 +117,7 @@ function loadWorkouts() {
         workoutHeader.className = 'workout-title';
         workoutHeader.innerHTML = `
             <h3>${workout.name}</h3>
+            ${workout.category ? `<span class="workout-category">${workout.category}</span>` : ''}
             <div class="workout-actions">
                 <span class="workout-date">${workout.date}</span>
                 <button class="delete-btn delete-workout" data-id="${workout.id}">Excluir</button>

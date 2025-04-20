@@ -168,6 +168,27 @@ footer {
     margin-top: 2rem;
 }
 
+select {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    background-color: white;
+    appearance: menulist;
+    color: #333;
+}
+
+.workout-category {
+    display: inline-block;
+    padding: 0.3rem 0.6rem;
+    background-color: #3498db;
+    color: white;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    margin-left: 0.5rem;
+}
+
 /* Responsividade */
 
 
