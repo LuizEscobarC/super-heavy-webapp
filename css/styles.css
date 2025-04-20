@@ -141,6 +141,14 @@ button[type="submit"]:hover {
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
+.no-workouts {
+    background-color: #2c3e50;
+    color: white;
+    padding: 0.8rem 1.5rem;
+    border-radius: 4px;
+    text-align: center;
+}
+
 .delete-btn {
     background-color: #e74c3c;
     padding: 0.4rem 0.8rem;
