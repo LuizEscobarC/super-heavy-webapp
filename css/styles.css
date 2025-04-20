@@ -128,6 +128,21 @@ button[type="submit"]:hover {
      margin-bottom: 0.5rem;
 }
 
+.workout-category-div {
+    display: flex;
+    justify-content: first baseline;
+    margin: 0 0 1rem 0;
+}
+
+.workout-category {
+    display: inline-block;
+    padding: 0.3rem 0.6rem;
+    background-color: #3498db;
+    color: white;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    margin-left: 0.5rem;
+}
 
 .exercise-list {
     margin-top: 1rem;
@@ -158,6 +173,16 @@ button[type="submit"]:hover {
 .delete-btn:hover {
     background-color: #c0392b;
 }
+.edit-btn {
+    background-color: #3498db;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.9rem;
+}
+
+.edit-btn:hover {
+    background-color: #2980b9;
+}
+
 
 /* Footer */
 footer {
@@ -179,14 +204,23 @@ select {
     color: #333;
 }
 
-.workout-category {
+.filter-controls {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+    background-color: #f9f9f9;
+    padding: 0.8rem;
+    border-radius: 6px;
+}
+
+.filter-controls label {
+    margin: 0 1rem 0 0;
     display: inline-block;
-    padding: 0.3rem 0.6rem;
-    background-color: #3498db;
-    color: white;
-    border-radius: 4px;
-    font-size: 0.8rem;
-    margin-left: 0.5rem;
+}
+
+.filter-controls select {
+    width: auto;
+    flex-grow : 1;
 }
 
 /* Responsividade */
