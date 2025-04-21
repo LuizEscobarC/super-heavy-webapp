@@ -261,7 +261,7 @@ function App() {
             </div>
 
             <div id="workouts-container">
-              {workouts.lenght === 0 ? (
+              {workouts.length === 0 ? (
                 <p className="no-workouts">Você ainda não tem treinos salvos.</p>
               ) : (
                 workouts.filter(workout => filterCategory === 'all' || workout.category === filterCategory)
