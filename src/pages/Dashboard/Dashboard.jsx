@@ -3,7 +3,7 @@ import WorkoutForm from '../../components/workout/WorkoutForm';
 import WorkoutList from '../../components/workout/WorkoutList';
 import useWorkouts from '../../hooks/useWorkouts';
 import './Dashboard.css';
-import Alert from '../../components/common/Alert/Alert';
+import{ Alert } from '../../components/common';
 
 const Dashboard = () => {
   const { workouts, loading, error, alert, addWorkout, updateWorkout, deleteWorkout, filterByCategory } = useWorkouts();
