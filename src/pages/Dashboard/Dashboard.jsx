@@ -3,9 +3,10 @@ import WorkoutForm from '../../components/workout/WorkoutForm';
 import WorkoutList from '../../components/workout/WorkoutList';
 import useWorkouts from '../../hooks/useWorkouts';
 import './Dashboard.css';
+import Alert from '../../components/common/Alert/Alert';
 
 const Dashboard = () => {
-  const { workouts, loading, error, addWorkout, updateWorkout, deleteWorkout, filterByCategory } = useWorkouts();
+  const { workouts, loading, error, alert, addWorkout, updateWorkout, deleteWorkout, filterByCategory } = useWorkouts();
   const [workoutToEdit, setWorkoutToEdit] = useState(null);
   const [filterCategory, setFilterCategory] = useState('all');
 
@@ -23,6 +24,7 @@ const Dashboard = () => {
 
   return (
     <main className="dashboard">
+      {alert && <Alert message={alert.message} type={alert.type} />}
       <WorkoutForm 
         addWorkout={addWorkout} 
         updateWorkout={updateWorkout}

@@ -13,6 +13,7 @@
   padding-bottom: 0.5rem;
 }
 
+
 .filter-controls {
   display: flex;
   align-items: center;
@@ -45,6 +46,12 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 0.5rem;
+}
+
+.workout-info {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
 }
 
 .workout-category {
@@ -86,4 +93,37 @@
   background-color: #f8f9fa;
   border-radius: 4px;
   color: #6c757d;
+}
+
+@media screen and (max-width: 768px) {
+  .workout-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .workout-actions {
+    margin-top: 0.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: right;
+    width: 100%;
+  }
+
+  .workout-actions span {
+    margin-top: auto;
+  }
+
+  .filter-controls {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .filter-controls label {
+    margin-bottom: 0.5rem;
+  }
+
+  .filter-controls select {
+    width: 100%;
+  }
 }

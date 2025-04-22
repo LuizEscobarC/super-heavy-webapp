@@ -40,9 +40,9 @@ const WorkoutList = ({
             .map((workout) => (
               <div className="workout-item" key={workout.id}>
                 <div className="workout-header">
-                  <div>
-                    <h3>{workout.name}</h3>
+                  <div className="workout-info">
                     {workout.category && <span className="workout-category">{workout.category}</span>}
+                    <h3>{workout.name}</h3>
                   </div>
                   <div className="workout-actions">
                     <span className="workout-date">{workout.date}</span>
