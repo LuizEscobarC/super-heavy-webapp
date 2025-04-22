@@ -7,7 +7,6 @@ const useWorkouts = () => {
     const [workouts, setWorkouts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [alert, setAlert] = useState(null);
 
     useEffect(() => {
         try {
@@ -25,7 +24,6 @@ const useWorkouts = () => {
             const updatedWorkouts = [...workouts, workout]
             setWorkouts(updatedWorkouts);
             localStorageService.set(STORAGE_KEY, updatedWorkouts);
-            setAlert({ message: 'Treino adicionado com sucesso!', type: 'success' });
             return true;
         } catch (error) {
             setError('Erro ao adicionar treino');
@@ -40,7 +38,6 @@ const useWorkouts = () => {
             );
             setWorkouts(updatedWorkouts);
             localStorageService.set(STORAGE_KEY, updatedWorkouts);
-            setAlert({ message: 'Treino atualizado com sucesso!', type: 'success' });
             return true;
         } catch (error) {
             setError('Erro ao atualizar treino');
@@ -53,7 +50,6 @@ const useWorkouts = () => {
             const updatedWorkouts = workouts.filter(workout => workout.id !== id);
             setWorkouts(updatedWorkouts);
             localStorageService.set(STORAGE_KEY, updatedWorkouts);
-            setAlert({ message: 'Treino deletado com sucesso!', type: 'success' });
             return true;
         } catch (error) {
             setError('Erro ao excluir treino');
