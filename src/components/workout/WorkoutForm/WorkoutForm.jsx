@@ -167,7 +167,7 @@ const WorkoutForm = ({ addWorkout, updateWorkout, workoutToEdit, setWorkoutToEdi
                   {exercises.length > 1 && (
                     <button
                       type="button"
-                      className="delete-btn"
+                      className="delete-btn btn-delete-exercise"
                       onClick={() => removeExercise(exercise.id)}
                     >
                       Remover

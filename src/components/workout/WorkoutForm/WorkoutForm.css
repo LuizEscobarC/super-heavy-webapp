@@ -33,3 +33,8 @@
   background-color: #3498db;
   width: 100%;
 }
+
+.btn-delete-exercise {
+  display: flex;
+  margin-left: auto;
+}

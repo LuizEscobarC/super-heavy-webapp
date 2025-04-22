@@ -69,8 +69,6 @@ button[type="submit"]:hover {
   background-color: #e74c3c;
   padding: 0.4rem 0.8rem;
   font-size: 0.9rem;
-  display: flex;
-  margin-left: auto;
 }
 
 .delete-btn:hover {
