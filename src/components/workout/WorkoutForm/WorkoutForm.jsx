@@ -39,7 +39,7 @@ const WorkoutForm = ({ addWorkout, updateWorkout, workoutToEdit, setWorkoutToEdi
 
     const updateExercise = (id, field, value) => {
         setExercises(exercises.map(exercise => 
-            exercise.id === id ? {exercise, [field]: value} : exercise
+            exercise.id === id ? {...exercise, [field]: value} : exercise
         ));
     };
 
@@ -54,14 +54,12 @@ const WorkoutForm = ({ addWorkout, updateWorkout, workoutToEdit, setWorkoutToEdi
                 exercises: exercises
             });
             setWorkoutToEdit(null);
-        }
-
-        if (!workoutToEdit) {
+        } else {
             const newWorkout = {
                 id: uuidv4(),
                 name: workoutName,
                 category: workoutCategory,
-                date: new Date().toLocaleDateString(),
+                date: new Date().toLocaleDateString('pt-BR'),
                 exercises: exercises
             };
 
