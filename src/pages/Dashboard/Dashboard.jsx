@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import WorkoutForm from '../../components/workout/WorkoutForm';
 import WorkoutList from '../../components/workout/WorkoutList';
-import useWorkouts from '../../hooks/useWorkouts';
+import useWorkouts from '../../hooks/useWourkout';
 import './Dashboard.css';
 import{ Alert } from '../../components/common';
 
