@@ -177,7 +177,7 @@ const WorkoutForm = ({ addWorkout, updateWorkout, workoutToEdit, setWorkoutToEdi
               ))}
             </div>
     
-            <button type="button" onClick={addExerciseField}>
+            <button  className="btn-add-exercise" type="button" onClick={addExerciseField}>
               + Adicionar Exercício
             </button>
     

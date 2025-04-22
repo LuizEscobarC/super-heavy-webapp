@@ -29,7 +29,7 @@
   border-left: 4px solid #3498db;
 }
 
-button[type="button"] {
+.btn-add-exercise {
   background-color: #3498db;
   width: 100%;
 }
