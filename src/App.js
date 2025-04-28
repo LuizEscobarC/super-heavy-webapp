@@ -1,18 +1,18 @@
 import './App.css';
 import Dashboard from './pages/Dashboard/Dashboard';
 import { Header, Footer } from './components/common';
-import ThemeToggle from './components/common/ThemeToggle';
-import useTheme from './hooks/useTheme.js';
+import FloatingTimer from './components/workout/FloatingTimer/FloatingTimer';
+import { WorkoutProvider } from './contexts/WorkoutContext';
 
 function App() {
-  const { darkMode, toggleDarkMode } = useTheme();
-
   return (
     <div className="App">
-      <Header />
-      <Dashboard />
-      <Footer />
-      <ThemeToggle darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
+      <WorkoutProvider>
+        <Header />
+        <Dashboard />
+        <Footer />
+        <FloatingTimer />
+      </WorkoutProvider>
     </div>
   );
 }

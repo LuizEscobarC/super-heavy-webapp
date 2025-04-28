@@ -1,0 +1,86 @@
+.floating-timer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: var(--color-bg-secondary);
+  color: var(--color-text-primary);
+  padding: var(--spacing-md);
+  box-shadow: var(--box-shadow-lg);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.timer-progress {
+  height: 4px;
+  background-color: var(--color-bg-input);
+  border-radius: var(--border-radius-sm);
+  overflow: hidden;
+}
+
+.timer-progress-bar {
+  height: 100%;
+  background-color: var(--color-warning);
+  transition: width 1s linear;
+}
+
+.timer-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  align-items: center;
+}
+
+.timer-display {
+  font-size: 1.2rem;
+  font-weight: bold;
+  font-family: var(--font-family-mono);
+}
+
+.timer-controls {
+  display: flex;
+  gap: var(--spacing-sm);
+  width: 100%;
+  justify-content: center;
+}
+
+.remove-time-btn {
+  background-color: var(--color-danger);
+  color: white;
+  border: none;
+  padding: var(--spacing-xs) var(--spacing-md);
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+}
+
+.add-time-btn {
+  background-color: var(--color-success);
+  color: white;
+  border: none;
+  padding: var(--spacing-xs) var(--spacing-md);
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+}
+
+.skip-timer-btn {
+  background-color: var(--color-primary);
+  color: white;
+  border: none;
+  padding: var(--spacing-xs) var(--spacing-md);
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+}
+
+/* Desktop */
+@media screen and (min-width: 768px) {
+  .timer-content {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  
+  .timer-controls {
+    width: auto;
+  }
+}

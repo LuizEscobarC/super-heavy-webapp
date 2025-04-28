@@ -67,7 +67,6 @@ const useWorkouts = () => {
         workouts,
         loading,
         error,
-        alert,
         addWorkout,
         updateWorkout,
         deleteWorkout,

@@ -1,149 +1,109 @@
-/* Reset básico e estilos gerais */
+/* Estilos gerais */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Arial', sans-serif;
 }
 
-body {
-  background-color: #f5f7fa;
-  color: #333;
-  line-height: 1.6;
+.App {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 60px; /* Espaço para o timer flutuante */
 }
 
 /* Estilos de formulário globais */
 label {
   display: block;
-  margin-bottom: 0.5rem;
+  margin-bottom: var(--spacing-xs);
   font-weight: bold;
+  color: var(--color-text-primary);
 }
 
 input[type="text"],
 input[type="number"] {
   width: 100%;
-  padding: 0.8rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  padding: var(--spacing-sm);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-sm);
   font-size: 1rem;
+  background-color: var(--color-bg-input);
+  color: var(--color-text-primary);
 }
 
 select {
   width: 100%;
-  padding: 0.8rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  padding: var(--spacing-sm);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-sm);
   font-size: 1rem;
-  background-color: white;
+  background-color: var(--color-bg-input);
+  color: var(--color-text-primary);
   appearance: menulist;
-  color: #333;
 }
 
 button {
-  background-color: #3498db;
+  background-color: var(--color-primary);
   color: white;
   border: none;
-  padding: 0.8rem 1.5rem;
-  border-radius: 4px;
+  padding: var(--spacing-sm) var(--spacing-lg);
+  border-radius: var(--border-radius-sm);
   cursor: pointer;
   font-size: 1rem;
   transition: background-color 0.3s;
 }
 
 button:hover {
-  background-color: #2980b9;
+  background-color: var(--color-primary-hover);
 }
 
 button[type="submit"] {
-  background-color: #2ecc71;
-  margin-top: 1rem;
+  background-color: var(--color-success);
+  margin-top: var(--spacing-md);
   display: block;
   width: 100%;
 }
 
 button[type="submit"]:hover {
-  background-color: #27ae60;
+  background-color: var(--color-success-hover);
 }
 
 .delete-btn {
-  background-color: #e74c3c;
-  padding: 0.4rem 0.8rem;
+  background-color: var(--color-danger);
+  padding: var(--spacing-xs) var(--spacing-sm);
   font-size: 0.9rem;
 }
 
 .delete-btn:hover {
-  background-color: #c0392b;
+  background-color: var(--color-danger-hover);
 }
 
 .edit-btn {
-  background-color: #f39c12;
-  padding: 0.4rem 0.8rem;
+  background-color: var(--color-warning);
+  padding: var(--spacing-xs) var(--spacing-sm);
   font-size: 0.9rem;
-  margin-right: 0.5rem;
+  margin-right: var(--spacing-xs);
 }
 
 .edit-btn:hover {
-  background-color: #e67e22;
+  background-color: var(--color-warning-hover);
 }
 
-/* No final de App.css */
-body.dark-mode {
-  background-color: #121212;
-  color: #e0e0e0;
-}
-
-body.dark-mode header,
-body.dark-mode footer {
-  background-color: #1e1e1e;
-}
-
-body.dark-mode section {
-  background-color: #2d2d2d;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-}
-
-body.dark-mode h2 {
-  color: #e0e0e0;
-  border-bottom-color: #444;
-}
-
-body.dark-mode input,
-body.dark-mode select {
-  background-color: #333;
-  color: #e0e0e0;
-  border-color: #555;
-}
-
-body.dark-mode .workout-item {
-  background-color: #2d2d2d;
-}
-
-body.dark-mode .exercise-entry {
-  background-color: #333;
-}
-
-body.dark-mode .exercise-item {
-  background-color: #333;
-}
-
-body.dark-mode .filter-controls {
-  background-color: #333;
-}
-
-body.dark-mode h2 {
-  color: #e0e0e0;
-  border-bottom-color: #444;
-}
-
-
-
-/* Responsividade */
-@media screen and (max-width: 768px) {
+/* Responsividade - Mobile first por padrão */
+@media screen and (min-width: 768px) {
+  /* Ajustes para desktop */
   main {
-    padding: 0 0.8rem;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: var(--spacing-lg);
   }
   
-  section {
-    padding: 1rem;
+  .form-row {
+    display: flex;
+    gap: var(--spacing-md);
+  }
+  
+  .form-row .form-group {
+    flex: 1;
   }
 }

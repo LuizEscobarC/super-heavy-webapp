@@ -1,23 +1,30 @@
 import React, { useState } from 'react';
 import WorkoutForm from '../../components/workout/WorkoutForm';
 import WorkoutList from '../../components/workout/WorkoutList';
-import useWorkouts from '../../hooks/useWourkout';
+import WorkoutExecution from '../../components/workout/WorkoutExecution/WorkoutExecution';
+import { Alert } from '../../components/common';
+import { useWorkout } from '../../contexts/WorkoutContext';
 import './Dashboard.css';
-import{ Alert } from '../../components/common';
 
 const Dashboard = () => {
-  const { workouts, loading, error, addWorkout, updateWorkout, deleteWorkout, filterByCategory } = useWorkouts();
+  const { 
+    workouts, 
+    loading, 
+    error,
+    activeWorkout,
+    addWorkout, 
+    updateWorkout, 
+    deleteWorkout,
+    startWorkout,
+    finishWorkout
+  } = useWorkout();
+  
   const [workoutToEdit, setWorkoutToEdit] = useState(null);
-  const [filterCategory, setFilterCategory] = useState('all');
   const [alert, setAlert] = useState(null);
 
   const handleEdit = (workout) => {
     setWorkoutToEdit(workout);
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  const handleCategoryChange = (category) => {
-    setFilterCategory(category);
   };
 
   const handleAddWorkout = (workout) => {
@@ -33,9 +40,21 @@ const Dashboard = () => {
     const success = updateWorkout(workout);
     if (success) {
       setAlert({ message: 'Treino atualizado com sucesso!', type: 'success' });
+      setWorkoutToEdit(null);
     } else {
       setAlert({ message: 'Erro ao atualizar treino', type: 'error' });
     }
+  };
+
+  const handleStartWorkout = (workoutId) => {
+    if (startWorkout(workoutId)) {
+      setAlert({ message: 'Treino iniciado!', type: 'success' });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
+  const handleFinishWorkout = () => {
+    setAlert({ message: 'Treino concluído com sucesso!', type: 'success' });
   };
 
   if (loading) return <div>Carregando...</div>;
@@ -44,20 +63,26 @@ const Dashboard = () => {
   return (
     <main className="dashboard">
       {alert && <Alert message={alert.message} type={alert.type} />}
-      <WorkoutForm 
-        addWorkout={handleAddWorkout} 
-        updateWorkout={handleUpdateWorkout}
-        workoutToEdit={workoutToEdit}
-        setWorkoutToEdit={setWorkoutToEdit}
-      />
       
-      <WorkoutList 
-        workouts={filterByCategory(filterCategory)} 
-        onDelete={deleteWorkout}
-        onEdit={handleEdit}
-        filterCategory={filterCategory}
-        onCategoryChange={handleCategoryChange}
-      />
+      {activeWorkout ? (
+        <WorkoutExecution onFinish={handleFinishWorkout} />
+      ) : (
+        <>
+          <WorkoutForm 
+            addWorkout={handleAddWorkout} 
+            updateWorkout={handleUpdateWorkout}
+            workoutToEdit={workoutToEdit}
+            setWorkoutToEdit={setWorkoutToEdit}
+          />
+          
+          <WorkoutList 
+            workouts={workouts} 
+            onDelete={deleteWorkout}
+            onEdit={handleEdit}
+            onStart={handleStartWorkout}
+          />
+        </>
+      )}
     </main>
   );
 };

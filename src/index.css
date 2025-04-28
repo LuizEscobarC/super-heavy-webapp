@@ -1,13 +1,90 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+:root {
+  /* Paleta de cores escuras */
+  --color-bg-primary: #121212;
+  --color-bg-secondary: #1e1e1e;
+  --color-bg-card: #252525;
+  --color-bg-input: #2d2d2d;
+  
+  /* Cores de texto */
+  --color-text-primary: #e0e0e0;
+  --color-text-secondary: #b0b0b0;
+  --color-text-muted: #808080;
+  
+  /* Cores de ação */
+  --color-primary: #3498db;
+  --color-primary-hover: #2980b9;
+  --color-success: #2ecc71;
+  --color-success-hover: #27ae60;
+  --color-danger: #e74c3c;
+  --color-danger-hover: #c0392b;
+  --color-warning: #f39c12;
+  --color-warning-hover: #e67e22;
+  
+  /* Cores de borda e divisão */
+  --color-border: #333333;
+  --color-divider: #3a3a3a;
+  
+  /* Sombras */
+  --box-shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
+  --box-shadow-md: 0 4px 8px rgba(0, 0, 0, 0.4);
+  --box-shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.5);
+  
+  /* Arredondamentos */
+  --border-radius-sm: 4px;
+  --border-radius-md: 8px;
+  --border-radius-lg: 12px;
+  
+  /* Espaçamentos */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  
+  /* Fontes */
+  --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
+  --font-family-mono: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-family);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  line-height: 1.6;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: var(--font-family-mono);
+}
+
+/* Ajuste para o tema escuro em elementos nativos */
+input, select, textarea, button {
+  font-family: var(--font-family);
+  background-color: var(--color-bg-input);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border);
+}
+
+/* Estilos para scroll */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-bg-secondary);
+  border-radius: var(--border-radius-sm);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-muted);
 }

@@ -1,0 +1,322 @@
+.workout-execution {
+  background-color: var(--color-bg-card);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--box-shadow-sm);
+  padding: var(--spacing-sm);  /* Reduzido para telas pequenas */
+  margin-bottom: var(--spacing-lg);
+}
+
+.execution-header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);  /* Reduzido */
+  border-bottom: 2px solid var(--color-divider);
+  padding-bottom: var(--spacing-sm);  /* Reduzido */
+}
+
+.execution-header h2 {
+  margin: 0;
+  color: var(--color-text-primary);
+}
+
+.finish-btn {
+  background-color: var(--color-danger);
+  color: white;
+  padding: var(--spacing-xs) var(--spacing-md);
+  width: 100%;
+}
+
+.finish-btn:hover {
+  background-color: var(--color-danger-hover);
+}
+
+.exercise-progress {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);  /* Reduzido */
+}
+
+.execution-exercise {
+  background-color: var(--color-bg-secondary);
+  border-radius: var(--border-radius-sm);
+  padding: var(--spacing-sm);  /* Reduzido para telas pequenas */
+  border-left: 4px solid var(--color-primary);
+  margin-bottom: var(--spacing-sm);  /* Adicionado espaço entre exercícios */
+}
+
+.execution-exercise.completed {
+  border-left-color: var(--color-success);
+}
+
+.exercise-header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);  /* Reduzido */
+  margin-bottom: var(--spacing-sm);  /* Reduzido */
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.exercise-title {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.exercise-meta {
+  display: flex;
+  flex-wrap: wrap;  /* Permitir quebra em linhas */
+  gap: var(--spacing-xs);
+  font-size: 0.85rem;  /* Fonte ligeiramente menor */
+  color: var(--color-text-muted);
+}
+
+/* Mostra valores em 2 por linha para economizar espaço */
+.exercise-meta span {
+  width: calc(50% - var(--spacing-xs));
+}
+
+.series-layout {
+  display: flex;
+  margin-top: var(--spacing-md);
+}
+
+.series-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);  /* Reduzido */
+  margin-bottom: var(--spacing-sm);  /* Reduzido */
+  width: 100%;
+}
+
+.series-item {
+  background-color: var(--color-bg-input);
+  border-radius: var(--border-radius-sm);
+  padding: var(--spacing-sm);  /* Reduzido */
+  box-shadow: var(--box-shadow-sm);
+  margin-bottom: var(--spacing-xs);  /* Espaço entre séries */
+}
+
+.series-row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);  /* Reduzido */
+}
+
+.series-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.series-number {
+  font-weight: bold;
+  color: var(--color-text-primary);
+}
+
+.series-result {
+  color: var(--color-success);
+  font-weight: bold;
+}
+
+.series-inputs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;  /* 2 colunas para inputs */
+  grid-gap: var(--spacing-xs);
+}
+
+.series-inputs .form-group {
+  width: 100%;
+}
+
+.series-checkbox {
+  grid-column: span 2;  /* Ocupa linha inteira */
+  justify-content: center;
+  margin-top: var(--spacing-xs);
+}
+
+.series-actions {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: var(--spacing-xs);
+}
+
+.add-series-container {
+  text-align: center;
+  margin-top: var(--spacing-sm);
+  margin-bottom: var(--spacing-xs);
+}
+
+.add-series-btn {
+  background-color: var(--color-success);
+  color: white;
+  padding: var(--spacing-xs) var(--spacing-md);  /* Reduzido */
+  border-radius: var(--border-radius-sm);
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem;  /* Fonte menor */
+  transition: background-color 0.3s;
+  width: 100%;
+}
+
+.add-series-btn:hover {
+  background-color: var(--color-success-hover);
+}
+
+.remove-series-btn {
+  width: 26px;  /* Reduzido */
+  height: 26px;  /* Reduzido */
+  border-radius: 50%;
+  background-color: var(--color-danger);
+  color: white;
+  font-size: 1rem;  /* Fonte menor */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  cursor: pointer;
+}
+
+/* Inputs menores para economizar espaço */
+.series-inputs input[type="number"] {
+  padding: 6px;
+  font-size: 0.9rem;
+}
+
+/* Desktop */
+@media screen and (min-width: 768px) {
+  .workout-execution {
+    padding: var(--spacing-lg);
+  }
+  
+  .execution-header {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-lg);
+    padding-bottom: var(--spacing-md);
+  }
+  
+  .finish-btn {
+    width: auto;
+  }
+  
+  .exercise-header {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-md);
+  }
+  
+  .execution-exercise {
+    padding: var(--spacing-md);
+  }
+  
+  .exercise-meta {
+    flex-direction: row;
+    flex-wrap: nowrap;
+    font-size: 0.9rem;
+  }
+  
+  .exercise-meta span {
+    width: auto;
+  }
+  
+  .series-container {
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
+  }
+  
+  .series-item {
+    padding: var(--spacing-md);
+  }
+  
+  .series-row {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--spacing-sm);
+  }
+  
+  .series-info {
+    flex: 1;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .series-inputs {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--spacing-md);
+  }
+  
+  .series-checkbox {
+    margin-top: 0;
+    margin-left: var(--spacing-md);
+    grid-column: unset;
+  }
+  
+  .add-series-btn {
+    width: auto;
+    font-size: 1rem;
+    padding: var(--spacing-sm) var(--spacing-lg);
+  }
+  
+  .remove-series-btn {
+    width: 30px;
+    height: 30px;
+    font-size: 1.2rem;
+  }
+  
+  .series-inputs input[type="number"] {
+    padding: var(--spacing-xs);
+    font-size: 1rem;
+  }
+}
+
+/* Media query específica para resolver o problema em 720px */
+@media screen and (max-width: 720px) {
+  /* Ajusta o layout para séries */
+  .series-inputs {
+    grid-template-columns: 1fr;  /* Uma coluna em telas muito estreitas */
+  }
+  
+  .series-checkbox {
+    grid-column: 1;
+  }
+  
+  /* Reduz ainda mais o padding */
+  .workout-execution, 
+  .execution-exercise,
+  .series-item {
+    padding: 10px;
+  }
+  
+  /* Inputs maiores para melhor toque */
+  .series-inputs input[type="number"] {
+    height: 38px;
+  }
+  
+  /* Botões de ação maiores para melhor toque */
+  .series-checkbox input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+  }
+  
+  /* Aumenta o espaço entre itens de série */
+  .series-container {
+    gap: 12px;
+  }
+  
+  /* Melhora o alinhamento do texto */
+  .series-number {
+    display: block;
+    margin-bottom: 4px;
+  }
+}
