@@ -41,6 +41,13 @@
   background-color: var(--color-danger);
 }
 
+.exercise-actions {
+  display: flex;
+  gap: var(--spacing-xs);
+  flex-direction: row;
+
+}
+
 /* Desktop */
 @media screen and (min-width: 768px) {
   .workout-form {

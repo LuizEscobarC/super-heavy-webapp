@@ -226,13 +226,6 @@ export const WorkoutProvider = ({ children }) => {
     setCurrentExerciseInfo(null);
   };
   
-  const resetTimer = () => {
-    if (currentExerciseInfo && timerDuration) {
-      setTimeLeft(timerDuration);
-      setTimerActive(true);
-    }
-  };
-
   // useEffect para o timer
   useEffect(() => {
     let interval;
@@ -277,7 +270,6 @@ export const WorkoutProvider = ({ children }) => {
     timerDuration,
     startTimer,
     stopTimer,
-    resetTimer,
     setTimeLeft
   };
 

@@ -50,16 +50,6 @@
   font-weight: bold;
 }
 
-.muscle-tag {
-  display: inline-block;
-  padding: var(--spacing-xs) var(--spacing-sm);
-  background-color: var(--color-primary);
-  color: white;
-  border-radius: var(--border-radius-sm);
-  font-size: 0.8rem;
-  margin-left: var(--spacing-xs);
-}
-
 .exercise-list {
   margin-top: var(--spacing-md);
 }
@@ -74,15 +64,25 @@
 
 .exercise-header {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
 }
+
+.muscle-tag {
+  display: flex;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  background-color: var(--color-primary);
+  color: white;
+  border-radius: var(--border-radius-sm);
+  font-size: 0.8rem;
+}
+
 
 .exercise-details {
   margin-top: var(--spacing-xs);
   font-size: 0.9rem;
   color: var(--color-text-secondary);
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap: 0.2rem;
 }
 
@@ -137,7 +137,6 @@
   }
   
   .exercise-details {
-    flex-direction: row;
     gap: var(--spacing-sm);
   }
 }

@@ -59,7 +59,7 @@ const WorkoutForm = ({ addWorkout, updateWorkout, workoutToEdit, setWorkoutToEdi
     };
 
     const updateExercise = (id, field, value) => {
-        setExercises(exercises.map(exercise => 
+        setExercises(exercises.map(exercise =>
             exercise.id === id ? {...exercise, [field]: value} : exercise
         ));
     };
