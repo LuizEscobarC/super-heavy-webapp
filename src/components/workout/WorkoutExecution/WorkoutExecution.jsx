@@ -3,7 +3,7 @@ import { useWorkout } from '../../../contexts/WorkoutContext';
 import './WorkoutExecution.css';
 
 const WorkoutExecution = ({ onFinish }) => {
-  const { activeWorkout, completeExerciseSeries, finishWorkout, updateWorkout } = useWorkout();
+  const { activeWorkout, completeExerciseSeries, finishWorkout } = useWorkout();
   
   if (!activeWorkout) {
     return <div>Nenhum treino ativo</div>;
