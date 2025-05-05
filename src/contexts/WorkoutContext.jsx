@@ -120,7 +120,7 @@ export const WorkoutProvider = ({ children }) => {
         };
 
         // Check if all series are completed
-        const allCompleted = updatedSeries.every(series => series.completed);
+        const allCompleted = updatedSeries.every(serie => serie.completed);
 
         return {
           ...exercise,
@@ -156,7 +156,7 @@ export const WorkoutProvider = ({ children }) => {
       const updatedHistory = {
         ...workoutHistory,
         [activeWorkout.id]: [
-          ...(workoutHistory[activeWorkout.id] || []).slice(0, 9), // Keep last 10 entries
+          ...(workoutHistory[activeWorkout.id] || []).slice(-9),
           workoutData
         ]
       };
