@@ -101,7 +101,7 @@ const ExerciseExecution = ({ exercise, onCompleteSeries }) => {
         </div>
         <div className="exercise-meta">
           <span>{exercise.reps} repetições</span>
-          <span>{exercise.weight}kg</span>
+          <span>{exercise.weight}kg</span> 
           <span>{exercise.rest}s descanso</span>
           <span className="expand-icon">{isExpanded ? '▼' : '►'}</span>
         </div>
