@@ -1,34 +1,51 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useWorkout } from '../../../contexts/WorkoutContext';
 import './WorkoutList.css';
 
-const WorkoutList = ({ 
+const WorkoutList =  ({ 
   workouts, 
   onDelete, 
   onEdit,
   onStart
 }) => {
-  const { getLastWorkoutData } = useWorkout();
+  const { getLastWorkoutData, getWorkoutExercises } = useWorkout();
+  const [workoutsWithExercises, setWorkoutsWithExercises] = useState({});
+
+  useEffect(() => {
+    const fetchExercises = async () => {
+      const exercisesData = {};
+      
+      for (const workout of workouts) {
+        exercisesData[workout.id] = await getWorkoutExercises(workout) || [];
+      }
+      
+      setWorkoutsWithExercises(exercisesData);
+    };
+    
+    fetchExercises();
+  }, [workouts, getWorkoutExercises]);
 
   return (
     <section className="workout-list">
       <h2>Meus Treinos</h2>
+      
       
       <div className="workouts-container">
         {workouts.length === 0 ? (
           <p className="no-workouts">Nenhum treino encontrado. Crie seu primeiro treino acima!</p>
         ) : (
           workouts
-            .sort((a, b) => new Date(b.date) - new Date(a.date))
+            .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
             .map((workout) => {
               const lastWorkoutData = getLastWorkoutData(workout.id);
+              const exercises = workoutsWithExercises[workout.id] || [];
               
               return (
                 <div className="workout-item" key={workout.id}>
                   <div className="workout-header">
                     <div className="workout-info">
                       <h3>{workout.name}</h3>
-                      <span className="workout-date">Criado em: {workout.date}</span>
+                      <span className="workout-date">Criado em: {workout.createdAt}</span>
                       {lastWorkoutData && (
                         <span className="last-performed">
                           Último treino: {new Date(lastWorkoutData.date).toLocaleDateString('pt-BR')}
@@ -60,13 +77,14 @@ const WorkoutList = ({
                       </button>
                     </div>
                   </div>
-                  
+
+            
                   <div className="exercise-list">
-                    {workout.exercises.map((exercise, index) => (
+                    {exercises.map((exercise, index) => (
                       <div className="exercise-item" key={index}>
                         <div className="exercise-header">
-                          <strong>{exercise.name}</strong>
-                          {exercise.muscle && <span className="muscle-tag">{exercise.muscle}</span>}
+                          <strong>{exercise.exercise.name}</strong>
+                          {exercise.exercise.name && <span className="muscle-tag">{exercise.exercise.name}</span>}
                         </div>
                         <div className="exercise-details">
                           <span>{exercise.series || 1} séries</span> | 

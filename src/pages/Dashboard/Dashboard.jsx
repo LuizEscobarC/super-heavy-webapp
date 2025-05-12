@@ -63,16 +63,16 @@ const Dashboard = () => {
     <main className="dashboard">
       {alert && <Alert message={alert.message} type={alert.type} />}
       
-      {activeWorkout ? (
+      {/* {activeWorkout ? (
         <WorkoutExecution onFinish={handleFinishWorkout} />
-      ) : (
+      ) : ( */}
         <>
-          <WorkoutForm 
+          {/* <WorkoutForm 
             addWorkout={handleAddWorkout} 
             updateWorkout={handleUpdateWorkout}
             workoutToEdit={workoutToEdit}
             setWorkoutToEdit={setWorkoutToEdit}
-          />
+          /> */}
           
           <WorkoutList 
             workouts={workouts} 
@@ -81,7 +81,7 @@ const Dashboard = () => {
             onStart={handleStartWorkout}
           />
         </>
-      )}
+      {/* )} */}
     </main>
   );
 };

@@ -1,6 +1,7 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import localStorageService from '../services/localStorage';
+import superHeavyApi from '../services/superHeavyApi';
 
 const STORAGE_KEY = 'workouts';
 const HISTORY_KEY = 'workout_history';
@@ -21,17 +22,22 @@ export const WorkoutProvider = ({ children }) => {
   const [currentExerciseInfo, setCurrentExerciseInfo] = useState(null);
   
   useEffect(() => {
-    try {
-      const savedWorkouts = localStorageService.get(STORAGE_KEY) || [];
-      const savedHistory = localStorageService.get(HISTORY_KEY) || {};
-      
-      setWorkouts(savedWorkouts);
-      setWorkoutHistory(savedHistory);
-      setLoading(false);
-    } catch (error) {
-      setError('Error loading workouts');
-      setLoading(false);
-    }
+    const fetchWorkouts = async () => {
+      try {
+        const savedWorkouts = await superHeavyApi.get(STORAGE_KEY) || [];
+        console.log('Saved workouts:', savedWorkouts);
+        const savedHistory = localStorageService.get(HISTORY_KEY) || {};
+        
+        setWorkouts(savedWorkouts);
+        setWorkoutHistory(savedHistory);
+        setLoading(false);
+      } catch (error) {
+        setError('Error loading workouts');
+        setLoading(false);
+      }
+   };
+
+  fetchWorkouts();
   }, []);
 
   const addWorkout = (workout) => {
@@ -182,6 +188,12 @@ export const WorkoutProvider = ({ children }) => {
     setActiveWorkout(updatedWorkout);
   };
 
+  const getWorkoutExercises = async (workout) => {
+    if (!workout.id) return null;
+    const exercises = await superHeavyApi.get(`workouts/${workout.id}/exercises`);
+    return exercises ?? [];
+  }
+
   // Função para remover uma série específica de um exercício
   const removeExerciseSeries = (exerciseId, seriesIndex) => {
     if (!activeWorkout) return;
@@ -270,7 +282,8 @@ export const WorkoutProvider = ({ children }) => {
     timerDuration,
     startTimer,
     stopTimer,
-    setTimeLeft
+    setTimeLeft,
+    getWorkoutExercises,
   };
 
   return (
