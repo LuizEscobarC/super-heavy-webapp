@@ -18,16 +18,21 @@ const WorkoutForm = ({ addWorkout, updateWorkout, workoutToEdit, setWorkoutToEdi
         if (workoutToEdit) {
             setWorkoutName(workoutToEdit.name);
             
-            // Ensure exercises have the series property
-            const updatedExercises = workoutToEdit.exercises.map(exercise => ({
-                ...exercise,
-                series: exercise.series || 1,
-                muscle: exercise.muscle || ''
-            }));
+            const updatedExercises = workoutToEdit.exercises.map(exerciseItem => {
+                return {
+                    ...exerciseItem,
+                    series: exerciseItem.series || 1,
+                    exercise: {
+                        ...exerciseItem.exercise,
+                        muscle: exerciseItem.exercise?.muscle || ''
+                    }
+                };
+            });
             
             setExercises(updatedExercises);
         }
     }, [workoutToEdit]);
+
 
     const addExerciseField = () => {
         const newExercise = {
@@ -59,16 +64,33 @@ const WorkoutForm = ({ addWorkout, updateWorkout, workoutToEdit, setWorkoutToEdi
     };
 
     const updateExercise = (id, field, value) => {
-        setExercises(exercises.map(exercise =>
-            exercise.id === id ? {...exercise, [field]: value} : exercise
+        setExercises(exercises.map(exercise => {
+              if (exercise.id !== id) return exercise;
+        
+              if (field.includes('.')) {
+                  const [parent, child] = field.split('.');
+                  return {
+                      ...exercise,
+                      [parent]: {
+                          ...exercise[parent],
+                          [child]: value
+                      }
+                  };
+              }
+
+              return {
+                  ...exercise,
+                  [field]: value
+              };
+          }
         ));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         if (workoutToEdit) {
-            updateWorkout({
+            await updateWorkout({
                 ...workoutToEdit,
                 name: workoutName,
                 exercises: exercises
@@ -78,7 +100,7 @@ const WorkoutForm = ({ addWorkout, updateWorkout, workoutToEdit, setWorkoutToEdi
             const newWorkout = {
                 id: uuidv4(),
                 name: workoutName,
-                date: new Date().toLocaleDateString('pt-BR'),
+                createdAt: new Date().toLocaleDateString('pt-BR'),
                 exercises: exercises
             };
 
@@ -123,9 +145,9 @@ const WorkoutForm = ({ addWorkout, updateWorkout, workoutToEdit, setWorkoutToEdi
                       <input
                         type="text"
                         id={`exercise-name-${exercise.id}`}
-                        value={exercise.name}
+                        value={exercise.exercise?.name}
                         placeholder="Ex: Supino Reto, Agachamento, etc."
-                        onChange={(e) => updateExercise(exercise.id, 'name', e.target.value)}
+                        onChange={(e) => updateExercise(exercise.id, 'exercise.name', e.target.value)}
                         required
                       />
                     </div>
@@ -135,9 +157,9 @@ const WorkoutForm = ({ addWorkout, updateWorkout, workoutToEdit, setWorkoutToEdi
                       <input
                         type="text"
                         id={`muscle-${exercise.id}`}
-                        value={exercise.muscle}
+                        value={exercise.exercise?.muscle}
                         placeholder="Ex: Peito, Perna, etc."
-                        onChange={(e) => updateExercise(exercise.id, 'muscle', e.target.value)}
+                        onChange={(e) => updateExercise(exercise.id, 'exercise.muscle', e.target.value)}
                         required
                       />
                     </div>

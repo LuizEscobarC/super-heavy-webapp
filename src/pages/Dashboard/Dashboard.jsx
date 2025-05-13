@@ -8,7 +8,8 @@ import './Dashboard.css';
 
 const Dashboard = () => {
   const { 
-    workouts, 
+    workouts,
+    setworkouts,
     loading, 
     error,
     activeWorkout,
@@ -67,15 +68,16 @@ const Dashboard = () => {
         <WorkoutExecution onFinish={handleFinishWorkout} />
       ) : ( */}
         <>
-          {/* <WorkoutForm 
+          <WorkoutForm 
             addWorkout={handleAddWorkout} 
             updateWorkout={handleUpdateWorkout}
             workoutToEdit={workoutToEdit}
             setWorkoutToEdit={setWorkoutToEdit}
-          /> */}
+          />
           
           <WorkoutList 
-            workouts={workouts} 
+            workouts={workouts}
+            setworkouts={setworkouts}
             onDelete={deleteWorkout}
             onEdit={handleEdit}
             onStart={handleStartWorkout}

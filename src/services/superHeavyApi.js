@@ -7,7 +7,6 @@ const superhavyApi = {
             const response = await fetch(`${superhavyBaseUrl}/${route}`);
             if (!response.ok) throw new Error(`Erro HTTP: ${response.status}`);
             const data = await response.json();
-            console.log('Dados:', data);
             return data;
         } catch (error) {
             console.error('Erro:', error);
@@ -17,6 +16,22 @@ const superhavyApi = {
         try {
             const response = fetch(`${superhavyBaseUrl}/${route}`, {
                 method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+            if (!response.ok) throw new Error(`Erro HTTP: ${response.status}`);
+            return true;
+        } catch (error) {
+            console.error('Erro:', error);
+            return false;
+        }
+    },
+    put: async (route, data) => {
+        try {
+            const response = await fetch(`${superhavyBaseUrl}/${route}`, {
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
                 },

@@ -6,24 +6,10 @@ const WorkoutList =  ({
   workouts, 
   onDelete, 
   onEdit,
-  onStart
+  onStart,
+  setWorkouts
 }) => {
-  const { getLastWorkoutData, getWorkoutExercises } = useWorkout();
-  const [workoutsWithExercises, setWorkoutsWithExercises] = useState({});
-
-  useEffect(() => {
-    const fetchExercises = async () => {
-      const exercisesData = {};
-      
-      for (const workout of workouts) {
-        exercisesData[workout.id] = await getWorkoutExercises(workout) || [];
-      }
-      
-      setWorkoutsWithExercises(exercisesData);
-    };
-    
-    fetchExercises();
-  }, [workouts, getWorkoutExercises]);
+  const { getLastWorkoutData } = useWorkout();
 
   return (
     <section className="workout-list">
@@ -38,7 +24,6 @@ const WorkoutList =  ({
             .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
             .map((workout) => {
               const lastWorkoutData = getLastWorkoutData(workout.id);
-              const exercises = workoutsWithExercises[workout.id] || [];
               
               return (
                 <div className="workout-item" key={workout.id}>
@@ -80,11 +65,11 @@ const WorkoutList =  ({
 
             
                   <div className="exercise-list">
-                    {exercises.map((exercise, index) => (
+                    {(workout.exercises || []).map((exercise, index) => (
                       <div className="exercise-item" key={index}>
                         <div className="exercise-header">
-                          <strong>{exercise.exercise.name}</strong>
-                          {exercise.exercise.name && <span className="muscle-tag">{exercise.exercise.name}</span>}
+                          <strong>{exercise.exercise.muscle}</strong>
+                          {exercise.exercise.name && <span className="muscle-tag">{exercise.exercise.mescle}</span>}
                         </div>
                         <div className="exercise-details">
                           <span>{exercise.series || 1} séries</span> | 
@@ -94,7 +79,7 @@ const WorkoutList =  ({
                         </div>
                         
                         {/* Show last workout data if available */}
-                        {lastWorkoutData && lastWorkoutData.exercises && (
+                        {/* {lastWorkoutData && lastWorkoutData.exercises && (
                           <div className="last-workout-data">
                             {lastWorkoutData.exercises
                               .find(ex => ex.id === exercise.id)?.series
@@ -105,7 +90,7 @@ const WorkoutList =  ({
                               ))
                             }
                           </div>
-                        )}
+                        )} */}
                       </div>
                     ))}
                   </div>
