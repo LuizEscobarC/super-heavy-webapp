@@ -16,7 +16,8 @@ const Dashboard = () => {
     addWorkout, 
     updateWorkout, 
     deleteWorkout,
-    startWorkout
+    startWorkout,
+    exerciseList
   } = useWorkout();
   
   const [workoutToEdit, setWorkoutToEdit] = useState(null);
@@ -73,6 +74,7 @@ const Dashboard = () => {
             updateWorkout={handleUpdateWorkout}
             workoutToEdit={workoutToEdit}
             setWorkoutToEdit={setWorkoutToEdit}
+            exerciseList={exerciseList}
           />
           
           <WorkoutList 

@@ -12,6 +12,7 @@ export const useWorkout = () => useContext(WorkoutContext);
 
 export const WorkoutProvider = ({ children }) => {
   const [workouts, setWorkouts] = useState([]);
+  const [exerciseList, setExerciseList] = useState([]);
   const [activeWorkout, setActiveWorkout] = useState(null);
   const [workoutHistory, setWorkoutHistory] = useState({});
   const [loading, setLoading] = useState(true);
@@ -26,6 +27,7 @@ export const WorkoutProvider = ({ children }) => {
       try {
         let savedWorkouts = await superHeavyApi.get(STORAGE_KEY) || [];
         const savedHistory = localStorageService.get(HISTORY_KEY) || {};
+        const exercises = await superHeavyApi.get('exercises') || [];
 
         if (savedWorkouts) {
          const workoutsPromises = await savedWorkouts.map(async (workout) => {
@@ -38,6 +40,9 @@ export const WorkoutProvider = ({ children }) => {
             savedWorkouts = await Promise.all(workoutsPromises);
         }
 
+        
+        
+        setExerciseList(exercises);
         setWorkouts(savedWorkouts);
         setWorkoutHistory(savedHistory);
         setLoading(false);
@@ -71,13 +76,18 @@ export const WorkoutProvider = ({ children }) => {
   const updateWorkout = async (updatedWorkout) => {
     try {
 
-      
       const updatedWorkouts = workouts.map(workout => 
         workout.id === updatedWorkout.id ? updatedWorkout : workout
       );
 
       setWorkouts(updatedWorkouts);
-      await superHeavyApi.put(`${STORAGE_KEY}/${updatedWorkout.id}`, updatedWorkout);
+      await superHeavyApi.put(`${STORAGE_KEY}/${updatedWorkout.id}`, {
+        name: updatedWorkout.name
+      });
+
+      await superHeavyApi.put(`workouts/${updatedWorkout.id}/exercises`, {
+        exercises: updatedWorkout.exercises
+      });
       return true;
     } catch (error) {
       setError('Error updating workout');
@@ -275,6 +285,7 @@ export const WorkoutProvider = ({ children }) => {
 
   const value = {
     workouts,
+    exerciseList,
     loading,
     error,
     activeWorkout,
@@ -296,7 +307,8 @@ export const WorkoutProvider = ({ children }) => {
     stopTimer,
     setTimeLeft,
     getWorkoutExercises,
-    setWorkouts
+    setWorkouts,
+    setExerciseList,
   };
 
   return (

@@ -2,12 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import './WorkoutForm.css';
 
-const WorkoutForm = ({ addWorkout, updateWorkout, workoutToEdit, setWorkoutToEdit }) => {
+const WorkoutForm = ({ addWorkout, updateWorkout, workoutToEdit, setWorkoutToEdit, exerciseList }) => {
     const [workoutName, setWorkoutName] = useState('');
     const [exercises, setExercises] = useState([{
         id: uuidv4(),
         name: '',
-        muscle: '',
         weight: '',
         reps: '',
         rest: '',
@@ -18,16 +17,7 @@ const WorkoutForm = ({ addWorkout, updateWorkout, workoutToEdit, setWorkoutToEdi
         if (workoutToEdit) {
             setWorkoutName(workoutToEdit.name);
             
-            const updatedExercises = workoutToEdit.exercises.map(exerciseItem => {
-                return {
-                    ...exerciseItem,
-                    series: exerciseItem.series || 1,
-                    exercise: {
-                        ...exerciseItem.exercise,
-                        muscle: exerciseItem.exercise?.muscle || ''
-                    }
-                };
-            });
+            const updatedExercises = workoutToEdit.exercises;
             
             setExercises(updatedExercises);
         }
@@ -38,11 +28,11 @@ const WorkoutForm = ({ addWorkout, updateWorkout, workoutToEdit, setWorkoutToEdi
         const newExercise = {
             id: uuidv4(),
             name: '',
-            muscle: '',
             weight: '',
             reps: '',
             rest: '',
-            series: 1
+            series: 1,
+            order: exercises.length ?  exercises.length + 1 : 1
         };
     
         setExercises([...exercises, newExercise]);
@@ -66,6 +56,13 @@ const WorkoutForm = ({ addWorkout, updateWorkout, workoutToEdit, setWorkoutToEdi
     const updateExercise = (id, field, value) => {
         setExercises(exercises.map(exercise => {
               if (exercise.id !== id) return exercise;
+
+              if (field === 'exercise') {
+                  value = { 
+                    ...exerciseList.find(ex => ex.id === value)
+                  };
+
+              }
         
               if (field.includes('.')) {
                   const [parent, child] = field.split('.');
@@ -111,7 +108,6 @@ const WorkoutForm = ({ addWorkout, updateWorkout, workoutToEdit, setWorkoutToEdi
         setExercises([{
           id: uuidv4(),
           name: '',
-          muscle: '',
           weight: '',
           reps: '',
           rest: '',
@@ -142,26 +138,18 @@ const WorkoutForm = ({ addWorkout, updateWorkout, workoutToEdit, setWorkoutToEdi
                   <div className="form-row">
                     <div className="form-group">
                       <label htmlFor={`exercise-name-${exercise.id}`}>Nome do Exercício:</label>
-                      <input
-                        type="text"
+                      <select
                         id={`exercise-name-${exercise.id}`}
-                        value={exercise.exercise?.name}
-                        placeholder="Ex: Supino Reto, Agachamento, etc."
-                        onChange={(e) => updateExercise(exercise.id, 'exercise.name', e.target.value)}
+                        onChange={(e) => updateExercise(exercise.id, 'exercise', e.target.value)}
                         required
-                      />
-                    </div>
-                    
-                    <div className="form-group">
-                      <label htmlFor={`muscle-${exercise.id}`}>Músculo:</label>
-                      <input
-                        type="text"
-                        id={`muscle-${exercise.id}`}
-                        value={exercise.exercise?.muscle}
-                        placeholder="Ex: Peito, Perna, etc."
-                        onChange={(e) => updateExercise(exercise.id, 'exercise.muscle', e.target.value)}
-                        required
-                      />
+                      >
+                        <option value="">Selecione um exercício</option>
+                        {exerciseList.map((exerciseItem) => (
+                          <option key={exerciseItem.id} selected={(exercise.exercise?.id === exerciseItem.id) ? 'selected' : ''} value={exerciseItem.id}>
+                            {exerciseItem.name}
+                          </option>
+                        ))}
+                      </select>
                     </div>
                   </div>
 

@@ -30,7 +30,7 @@ const WorkoutList =  ({
                   <div className="workout-header">
                     <div className="workout-info">
                       <h3>{workout.name}</h3>
-                      <span className="workout-date">Criado em: {workout.createdAt}</span>
+                      <span className="workout-date">Criado em: {new Date(workout.createdAt).toLocaleDateString('pt-BR')}</span>
                       {lastWorkoutData && (
                         <span className="last-performed">
                           Último treino: {new Date(lastWorkoutData.date).toLocaleDateString('pt-BR')}
@@ -69,7 +69,7 @@ const WorkoutList =  ({
                       <div className="exercise-item" key={index}>
                         <div className="exercise-header">
                           <strong>{exercise.exercise.muscle}</strong>
-                          {exercise.exercise.name && <span className="muscle-tag">{exercise.exercise.mescle}</span>}
+                          {exercise.exercise.muscle && <span className="muscle-tag">{exercise.exercise.muscle}</span>}
                         </div>
                         <div className="exercise-details">
                           <span>{exercise.series || 1} séries</span> | 
