@@ -55,17 +55,27 @@ export const WorkoutProvider = ({ children }) => {
   fetchWorkouts();
   }, []);
 
-  const addWorkout = (workout) => {
+  const addWorkout = async (workout) => {
     try {
       const newWorkout = {
         ...workout,
-        id: uuidv4(),
-        date: new Date().toLocaleDateString('pt-BR')
       };
       
       const updatedWorkouts = [...workouts, newWorkout];
       setWorkouts(updatedWorkouts);
-      localStorageService.set(STORAGE_KEY, updatedWorkouts);
+      const {id: createdWorkoutId} = await superHeavyApi.post(STORAGE_KEY, {
+        name: newWorkout.name,
+      });
+
+      const orderedExercises = newWorkout.exercises.map((exercise, index) => ({
+        ...exercise,
+        order: index + 1,
+      }));
+
+      await superHeavyApi.put(`${STORAGE_KEY}/${createdWorkoutId}/exercises`, {
+        exercises: orderedExercises,
+      });
+
       return true;
     } catch (error) {
       setError('Error adding workout');

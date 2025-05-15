@@ -95,7 +95,6 @@ const WorkoutForm = ({ addWorkout, updateWorkout, workoutToEdit, setWorkoutToEdi
             setWorkoutToEdit(null);
         } else {
             const newWorkout = {
-                id: uuidv4(),
                 name: workoutName,
                 createdAt: new Date().toLocaleDateString('pt-BR'),
                 exercises: exercises

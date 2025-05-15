@@ -12,17 +12,19 @@ const superhavyApi = {
             console.error('Erro:', error);
         }    
     },
-    post: (route, data) => {
+    post: async (route, data) => {
         try {
-            const response = fetch(`${superhavyBaseUrl}/${route}`, {
+            const response = await fetch(`${superhavyBaseUrl}/${route}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(data)
             });
-            if (!response.ok) throw new Error(`Erro HTTP: ${response.status}`);
-            return true;
+            if (!response) throw new Error(`Erro HTTP: ${response.status}`);
+            console.log('Resposta:', response);
+            const responseData = await response.json();
+            return responseData;
         } catch (error) {
             console.error('Erro:', error);
             return false;
