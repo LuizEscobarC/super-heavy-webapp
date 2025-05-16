@@ -105,20 +105,16 @@ export const WorkoutProvider = ({ children }) => {
     }
   };
 
-  const deleteWorkout = (id) => {
+  const deleteWorkout = async (id) => {
     try {
       const updatedWorkouts = workouts.filter(workout => workout.id !== id);
       setWorkouts(updatedWorkouts);
-      localStorageService.set(STORAGE_KEY, updatedWorkouts);
-      
-      // Remove from history as well
-      const updatedHistory = { ...workoutHistory };
-      delete updatedHistory[id];
-      setWorkoutHistory(updatedHistory);
-      localStorageService.set(HISTORY_KEY, updatedHistory);
+
+      await superHeavyApi.delete(`${STORAGE_KEY}/${id}`);
       
       return true;
     } catch (error) {
+      console.log(error);
       setError('Error deleting workout');
       return false;
     }

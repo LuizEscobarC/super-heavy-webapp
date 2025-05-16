@@ -46,15 +46,14 @@ const superhavyApi = {
             return false;
         }
     },
-    remove: (route) => {
+    delete: async (route) => {
         try {
-            const response = fetch(`${superhavyBaseUrl}/${route}`, {
+            const response = await fetch(`${superhavyBaseUrl}/${route}`, {
                 method: 'DELETE'
             });
-            if (!response.ok) throw new Error(`Erro HTTP: ${response.status}`);
-            return true;
+            
+            return response.body() && response.json();
         } catch (error) {
-            console.error('Erro:', error);
             return false;
         }
     }
