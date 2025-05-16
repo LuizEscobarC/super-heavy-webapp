@@ -120,6 +120,55 @@ export const WorkoutProvider = ({ children }) => {
     }
   };
 
+  const deleteWorkoutExercise = async (workoutId, exerciseId) => {
+    try {
+      await superHeavyApi.delete(`workouts/${workoutId}/exercises/${exerciseId}`);
+      
+      const updatedWorkouts = workouts.map(workout => {
+        if (workout.id === workoutId) {
+          const updatedExercises = workout.exercises.filter(exercise => exercise.id !== exerciseId);
+          return {
+            ...workout,
+            exercises: updatedExercises
+          };
+        }
+        return workout;
+      });
+
+      setWorkouts(updatedWorkouts);
+
+      return true;
+    } catch (error) {
+      console.log(error);
+      setError('Error deleting workout exercise');
+      return false;
+    }
+  }
+
+  const addExerciseToWorkout = async (workoutId, exercise) => {
+    try {
+      const newExerciseAdded = await superHeavyApi.post(`${STORAGE_KEY}/${workoutId}/exercises`, exercise);
+
+      const updatedWorkouts = workouts.map(workout => {
+        if (workout.id === workoutId) {
+          const updatedExercises = [...workout.exercises, newExerciseAdded];
+          return {
+            ...workout,
+            exercises: updatedExercises
+          };
+        }
+        return workout;
+      });
+
+      setWorkouts(updatedWorkouts);
+      return newExerciseAdded;
+    } catch (error) {
+      console.log(error);
+      setError('Error adding exercise to workout');
+      return false;
+    }
+  };
+
   const startWorkout = (workoutId) => {
     const workout = workouts.find(w => w.id === workoutId);
     if (workout) {
@@ -315,6 +364,8 @@ export const WorkoutProvider = ({ children }) => {
     getWorkoutExercises,
     setWorkouts,
     setExerciseList,
+    deleteWorkoutExercise,
+    addExerciseToWorkout
   };
 
   return (

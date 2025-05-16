@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import './WorkoutForm.css';
+import WorkoutList from '../WorkoutList';
 
-const WorkoutForm = ({ addWorkout, updateWorkout, workoutToEdit, setWorkoutToEdit, exerciseList }) => {
+const WorkoutForm = ({ addWorkout, updateWorkout, workoutToEdit, setWorkoutToEdit, exerciseList, deleteWorkoutExercise, addExerciseToWorkout, workouts }) => {
     const [workoutName, setWorkoutName] = useState('');
     const [exercises, setExercises] = useState([{
-        id: uuidv4(),
+        id: '',
         name: '',
         weight: '',
         reps: '',
@@ -16,17 +17,16 @@ const WorkoutForm = ({ addWorkout, updateWorkout, workoutToEdit, setWorkoutToEdi
     useEffect(() => {
         if (workoutToEdit) {
             setWorkoutName(workoutToEdit.name);
-            
-            const updatedExercises = workoutToEdit.exercises;
-            
+            const workout = workouts.find(w => w.id === workoutToEdit.id);
+            const updatedExercises = workout.exercises;
             setExercises(updatedExercises);
         }
-    }, [workoutToEdit]);
+    }, [workoutToEdit, workouts]);
 
 
     const addExerciseField = () => {
         const newExercise = {
-            id: uuidv4(),
+            id: '',
             name: '',
             weight: '',
             reps: '',
@@ -38,19 +38,20 @@ const WorkoutForm = ({ addWorkout, updateWorkout, workoutToEdit, setWorkoutToEdi
         setExercises([...exercises, newExercise]);
     };
 
-    const duplicateExercise = (exerciseId) => {
-        const exerciseToDuplicate = exercises.find(ex => ex.id === exerciseId);
+    const duplicateExercise = async (exerciseId) => {
+        const workout = workouts.find(w => w.id === workoutToEdit.id);
+        const exerciseToDuplicate = workout.exercises.find(ex => ex.id === exerciseId);
         if (exerciseToDuplicate) {
-            const duplicatedExercise = {
-                ...exerciseToDuplicate,
-                id: uuidv4()
-            };
-            setExercises([...exercises, duplicatedExercise]);
+            await addExerciseToWorkout(workoutToEdit.id, {
+              ...exerciseToDuplicate,
+              id: undefined,
+              order: exercises.length ?  exercises.length + 1 : 1
+            });
         }
     };
 
-    const removeExercise = (id) => {
-        setExercises(exercises.filter(exercise => exercise.id !== id));
+    const removeExercise = async (id) => {
+        await deleteWorkoutExercise(workoutToEdit.id, id);
     };
 
     const updateExercise = (id, field, value) => {
@@ -62,17 +63,6 @@ const WorkoutForm = ({ addWorkout, updateWorkout, workoutToEdit, setWorkoutToEdi
                     ...exerciseList.find(ex => ex.id === value)
                   };
 
-              }
-        
-              if (field.includes('.')) {
-                  const [parent, child] = field.split('.');
-                  return {
-                      ...exercise,
-                      [parent]: {
-                          ...exercise[parent],
-                          [child]: value
-                      }
-                  };
               }
 
               return {
@@ -96,7 +86,6 @@ const WorkoutForm = ({ addWorkout, updateWorkout, workoutToEdit, setWorkoutToEdi
         } else {
             const newWorkout = {
                 name: workoutName,
-                createdAt: new Date().toLocaleDateString('pt-BR'),
                 exercises: exercises
             };
 
@@ -198,7 +187,7 @@ const WorkoutForm = ({ addWorkout, updateWorkout, workoutToEdit, setWorkoutToEdi
                         type="number" 
                         id={`rest-${exercise.id}`}
                         value={exercise.rest}
-                        onChange={(e) => updateExercise(exercise.id, 'rest', e.target.value)}
+                        onChange={async (e) => updateExercise(exercise.id, 'rest', e.target.value)}
                         min="0" 
                         required 
                       />
@@ -209,7 +198,7 @@ const WorkoutForm = ({ addWorkout, updateWorkout, workoutToEdit, setWorkoutToEdi
                     <button
                       type="button"
                       className="duplicate-btn"
-                      onClick={() => duplicateExercise(exercise.id)}
+                      onClick={async () => await duplicateExercise(exercise.id)}
                     >
                       Duplicar
                     </button>
@@ -218,7 +207,7 @@ const WorkoutForm = ({ addWorkout, updateWorkout, workoutToEdit, setWorkoutToEdi
                       <button
                         type="button"
                         className="delete-btn"
-                        onClick={() => removeExercise(exercise.id)}
+                        onClick={async () => await removeExercise(exercise.id)}
                       >
                         Remover
                       </button>
