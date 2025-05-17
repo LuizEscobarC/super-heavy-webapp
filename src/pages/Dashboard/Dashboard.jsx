@@ -19,7 +19,8 @@ const Dashboard = () => {
     startWorkout,
     exerciseList,
     deleteWorkoutExercise,
-    addExerciseToWorkout
+    addExerciseToWorkout,
+    getLastWorkoutData
   } = useWorkout();
   
   const [workoutToEdit, setWorkoutToEdit] = useState(null);
@@ -88,6 +89,7 @@ const Dashboard = () => {
             onDelete={deleteWorkout}
             onEdit={handleEdit}
             onStart={handleStartWorkout}
+            getLastWorkoutData={getLastWorkoutData}
           />
         </>
       {/* )} */}

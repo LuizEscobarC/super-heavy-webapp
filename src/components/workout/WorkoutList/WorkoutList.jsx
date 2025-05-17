@@ -1,5 +1,3 @@
-import React, { useEffect, useState } from 'react';
-import { useWorkout } from '../../../contexts/WorkoutContext';
 import './WorkoutList.css';
 
 const WorkoutList =  ({ 
@@ -7,9 +5,8 @@ const WorkoutList =  ({
   onDelete, 
   onEdit,
   onStart,
-  setWorkouts
+  getLastWorkoutData
 }) => {
-  const { getLastWorkoutData } = useWorkout();
 
   return (
     <section className="workout-list">
@@ -21,10 +18,8 @@ const WorkoutList =  ({
           <p className="no-workouts">Nenhum treino encontrado. Crie seu primeiro treino acima!</p>
         ) : (
           workouts
-            .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
             .map((workout) => {
               const lastWorkoutData = getLastWorkoutData(workout.id);
-              
               return (
                 <div className="workout-item" key={workout.id}>
                   <div className="workout-header">

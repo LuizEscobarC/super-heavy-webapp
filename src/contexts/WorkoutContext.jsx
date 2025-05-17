@@ -1,5 +1,4 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 import localStorageService from '../services/localStorage';
 import superHeavyApi from '../services/superHeavyApi';
 
@@ -25,25 +24,12 @@ export const WorkoutProvider = ({ children }) => {
   useEffect(() => {
     const fetchWorkouts = async () => {
       try {
-        let savedWorkouts = await superHeavyApi.get(STORAGE_KEY) || [];
+        const [savedApiDataWorkouts, exercisesListSelectForm] = await Promise.all([superHeavyApi.get(STORAGE_KEY), superHeavyApi.get('exercises')]);
         const savedHistory = localStorageService.get(HISTORY_KEY) || {};
-        const exercises = await superHeavyApi.get('exercises') || [];
-
-        if (savedWorkouts) {
-         const workoutsPromises = await savedWorkouts.map(async (workout) => {
-              const exercises = await getWorkoutExercises(workout) || [];
-              return {
-                ...workout,
-                exercises: exercises
-              };
-            });
-            savedWorkouts = await Promise.all(workoutsPromises);
-        }
 
         
-        
-        setExerciseList(exercises);
-        setWorkouts(savedWorkouts);
+        setExerciseList(exercisesListSelectForm);
+        setWorkouts(savedApiDataWorkouts);
         setWorkoutHistory(savedHistory);
         setLoading(false);
       } catch (error) {
