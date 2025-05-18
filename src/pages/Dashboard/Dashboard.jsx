@@ -86,7 +86,7 @@ const Dashboard = () => {
           <WorkoutList 
             workouts={workouts}
             setworkouts={setworkouts}
-            onDelete={deleteWorkout}
+            onDeleteWorkout={deleteWorkout}
             onEdit={handleEdit}
             onStart={handleStartWorkout}
             getLastWorkoutData={getLastWorkoutData}

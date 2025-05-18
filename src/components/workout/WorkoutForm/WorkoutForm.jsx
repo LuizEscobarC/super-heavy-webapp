@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import './WorkoutForm.css';
-import WorkoutList from '../WorkoutList';
 
 const WorkoutForm = ({ addWorkout, updateWorkout, workoutToEdit, setWorkoutToEdit, exerciseList, deleteWorkoutExercise, addExerciseToWorkout, workouts }) => {
     const [workoutName, setWorkoutName] = useState('');
     const [exercises, setExercises] = useState([{
-        id: '',
+        id: 1,
         name: '',
         weight: '',
         reps: '',
@@ -26,7 +25,7 @@ const WorkoutForm = ({ addWorkout, updateWorkout, workoutToEdit, setWorkoutToEdi
 
     const addExerciseField = () => {
         const newExercise = {
-            id: '',
+            id: exercises.length ?  exercises.length + 1 : 1,
             name: '',
             weight: '',
             reps: '',
@@ -39,8 +38,16 @@ const WorkoutForm = ({ addWorkout, updateWorkout, workoutToEdit, setWorkoutToEdi
     };
 
     const duplicateExercise = async (exerciseId) => {
+        if(!workoutToEdit) {
+          addExerciseField();
+          return;
+        }
         const workout = workouts.find(w => w.id === workoutToEdit.id);
         const exerciseToDuplicate = workout.exercises.find(ex => ex.id === exerciseId);
+        if(!exerciseToDuplicate || !exerciseToDuplicate?.id.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/)) {
+          addExerciseField();
+          return;
+        }
         if (exerciseToDuplicate) {
             await addExerciseToWorkout(workoutToEdit.id, {
               ...exerciseToDuplicate,
@@ -51,6 +58,11 @@ const WorkoutForm = ({ addWorkout, updateWorkout, workoutToEdit, setWorkoutToEdi
     };
 
     const removeExercise = async (id) => {
+        if(! workoutToEdit) {
+          const filteredExercises = exercises.filter(ex => ex.id !== id);
+          setExercises(filteredExercises);
+          return;
+        }
         await deleteWorkoutExercise(workoutToEdit.id, id);
     };
 

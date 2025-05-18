@@ -2,7 +2,7 @@ import './WorkoutList.css';
 
 const WorkoutList =  ({ 
   workouts, 
-  onDelete, 
+  onDeleteWorkout, 
   onEdit,
   onStart,
   getLastWorkoutData
@@ -49,7 +49,7 @@ const WorkoutList =  ({
                         className="delete-btn" 
                         onClick={() => {
                           if (window.confirm('Tem certeza que deseja excluir este treino?')) {
-                            onDelete(workout.id);
+                            onDeleteWorkout(workout.id);
                           }
                         }}
                       >
