@@ -124,7 +124,7 @@
 
 .series-inputs {
   display: grid;
-  grid-template-columns: 1fr 1fr;  /* 2 colunas para inputs */
+  grid-template-columns: 1fr 1fr;
   grid-gap: var(--spacing-xs);
 }
 
@@ -141,7 +141,7 @@
 .series-actions {
   display: flex;
   justify-content: space-between;
-  width: 100%;
+  width: 50%;
   margin-top: var(--spacing-xs);
 }
 

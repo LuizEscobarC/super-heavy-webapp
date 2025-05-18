@@ -91,6 +91,33 @@ export const WorkoutProvider = ({ children }) => {
     }
   };
 
+  const updateExercise = async (workoutId, exerciseId, updatedExercise) => {
+    try {
+      const updatedWorkouts = workouts.map(workout => {
+        if (workout.id === workoutId) {
+          const updatedExercises = workout.exercises.map(exercise => 
+            exercise.id === exerciseId ? updatedExercise : exercise
+          );
+          return {
+            ...workout,
+            exercises: updatedExercises
+          };
+        }
+        return workout;
+      });
+
+      setWorkouts(updatedWorkouts);
+      await superHeavyApi.put(`workouts/${workoutId}/exercises/${exerciseId}`, updatedExercise);
+      
+      return true;
+    }
+    catch (error) {
+      console.log(error);
+      setError('Error updating exercise');
+      return false;
+    }
+  }
+
   const deleteWorkout = async (id) => {
     try {
       const updatedWorkouts = workouts.filter(workout => workout.id !== id);
@@ -257,26 +284,31 @@ export const WorkoutProvider = ({ children }) => {
     return exercises ?? [];
   }
 
-  // Função para remover uma série específica de um exercício
-  const removeExerciseSeries = (exerciseId, seriesIndex) => {
+  const removeExerciseSeries = async(exerciseId, seriesIndex) => {
     if (!activeWorkout) return;
 
-    const updatedExercises = activeWorkout.exercises.map(exercise => {
+    const updatedExercisesPromises = activeWorkout.exercises.map(async (exercise) => {
       if (exercise.id === exerciseId) {
-        // Remove a série específica
         const updatedSeries = exercise.actualSeries.filter((_, idx) => idx !== seriesIndex);
         
-        // Atualiza a contagem de séries
+        const newSeriesCount = Math.max(1, (exercise.series || 1) - 1);
+
+        await superHeavyApi.put(`workouts/${activeWorkout.id}/exercises/${exerciseId}`, {
+          ...exercise,
+          series: newSeriesCount,
+        });
+
         return {
           ...exercise,
-          series: Math.max(1, (exercise.series || 1) - 1),
+          series: newSeriesCount,
           actualSeries: updatedSeries,
-          // Recalcula se todas as séries estão completas
           completed: updatedSeries.length > 0 && updatedSeries.every(series => series.completed)
         };
       }
       return exercise;
     });
+
+    const updatedExercises = await Promise.all(updatedExercisesPromises);
 
     setActiveWorkout({
       ...activeWorkout,
@@ -351,7 +383,8 @@ export const WorkoutProvider = ({ children }) => {
     setWorkouts,
     setExerciseList,
     deleteWorkoutExercise,
-    addExerciseToWorkout
+    addExerciseToWorkout,
+    updateExercise
   };
 
   return (

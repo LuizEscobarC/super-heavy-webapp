@@ -140,12 +140,13 @@ const WorkoutForm = ({ addWorkout, updateWorkout, workoutToEdit, setWorkoutToEdi
                       <label htmlFor={`exercise-name-${exercise.id}`}>Nome do Exercício:</label>
                       <select
                         id={`exercise-name-${exercise.id}`}
+                        value={exercise.exercise?.id || ''}
                         onChange={(e) => updateExercise(exercise.id, 'exercise', e.target.value)}
                         required
                       >
                         <option value="">Selecione um exercício</option>
                         {exerciseList.map((exerciseItem) => (
-                          <option key={exerciseItem.id} selected={(exercise.exercise?.id === exerciseItem.id) ? 'selected' : ''} value={exerciseItem.id}>
+                          <option key={exerciseItem.id} value={exerciseItem.id}>
                             {exerciseItem.name}
                           </option>
                         ))}

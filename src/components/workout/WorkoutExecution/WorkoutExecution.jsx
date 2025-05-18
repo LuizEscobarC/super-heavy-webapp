@@ -2,8 +2,11 @@ import React, { useState } from 'react';
 import { useWorkout } from '../../../contexts/WorkoutContext';
 import './WorkoutExecution.css';
 
+
 const WorkoutExecution = ({ onFinish }) => {
-  const { activeWorkout, completeExerciseSeries, finishWorkout } = useWorkout();
+  const { activeWorkout, completeExerciseSeries, finishWorkout, updateExercise } = useWorkout();
+
+  console.log('activeWorkout', activeWorkout);
   
   if (!activeWorkout) {
     return <div>Nenhum treino ativo</div>;
@@ -42,6 +45,7 @@ const WorkoutExecution = ({ onFinish }) => {
             key={exercise.id}
             exercise={exercise}
             onCompleteSeries={handleCompleteSeries}
+            updateExercise={updateExercise}
           />
         ))}
       </div>
@@ -50,20 +54,15 @@ const WorkoutExecution = ({ onFinish }) => {
 };
 
 // Componente para cada exercício
-const ExerciseExecution = ({ exercise, onCompleteSeries }) => {
+const ExerciseExecution = ({ exercise, onCompleteSeries, updateExercise }) => {
   const { activeWorkout, updateActiveWorkout, removeExerciseSeries } = useWorkout();
   const [isExpanded, setIsExpanded] = useState(true);
   const isCompleted = exercise.completed;
   
-  // Função para adicionar uma nova série ao exercício
-  const addSeries = () => {
-    // Encontra o exercício no workout ativo
-    const updatedExercises = activeWorkout.exercises.map(ex => {
+  const addSeries = async () => {
+    const updatedExercisesPromises = await activeWorkout.exercises.map(async (ex) => {
       if (ex.id === exercise.id) {
-        // Aumenta o número de séries
-        const newSeriesCount = (ex.series || 1) + 1;
-        
-        // Atualiza as séries atuais para incluir a nova
+        const newSeriesCount = (ex.series || 1) + 1;        
         const updatedSeries = [
           ...(ex.actualSeries || []),
           {
@@ -72,7 +71,12 @@ const ExerciseExecution = ({ exercise, onCompleteSeries }) => {
             actualReps: ex.reps
           }
         ];
-        
+
+        await updateExercise(activeWorkout.id, ex.id, {
+          ...ex,
+          series: newSeriesCount,
+        });
+    
         return {
           ...ex,
           series: newSeriesCount,
@@ -82,6 +86,7 @@ const ExerciseExecution = ({ exercise, onCompleteSeries }) => {
       return ex;
     });
     
+    const updatedExercises = await Promise.all(updatedExercisesPromises);
     // Atualiza o workout ativo
     updateActiveWorkout({
       ...activeWorkout,
@@ -96,8 +101,8 @@ const ExerciseExecution = ({ exercise, onCompleteSeries }) => {
         onClick={() => setIsExpanded(!isExpanded)}
       >
         <div className="exercise-title">
-          <h3>{exercise.name}</h3>
-          {exercise.muscle && <span className="muscle-tag">{exercise.muscle}</span>}
+          <h3>{exercise.exercise.name}</h3>
+          {exercise.exercise.muscle && <span className="muscle-tag">{exercise.exercise.muscle}</span>}
         </div>
         <div className="exercise-meta">
           <span>{exercise.reps} repetições</span>
@@ -137,6 +142,7 @@ const ExerciseExecution = ({ exercise, onCompleteSeries }) => {
 const SeriesExecution = ({ exercise, seriesIndex, onCompleteSeries, onRemove, canRemove }) => {
   const { startTimer, currentExerciseInfo } = useWorkout();
   const seriesData = exercise.actualSeries[seriesIndex];
+  console.log('seriesData', seriesData);
   const isCompleted = seriesData?.completed;
   
   const [editedData, setEditedData] = useState({
@@ -182,6 +188,7 @@ const SeriesExecution = ({ exercise, seriesIndex, onCompleteSeries, onRemove, ca
         
         <div className="form-row series-inputs">
           <div className="form-group">
+            <label htmlFor={`weight-${exercise.id}-${seriesIndex}`}>Peso (kg):</label>
             <input 
               type="number" 
               value={editedData.actualWeight}
@@ -192,6 +199,7 @@ const SeriesExecution = ({ exercise, seriesIndex, onCompleteSeries, onRemove, ca
           </div>
           
           <div className="form-group">
+            <label htmlFor={`reps-${exercise.id}-${seriesIndex}`}>Repetições:</label>
             <input 
               type="number" 
               value={editedData.actualReps}
