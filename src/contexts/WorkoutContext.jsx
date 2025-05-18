@@ -182,7 +182,7 @@ export const WorkoutProvider = ({ children }) => {
     }
   };
 
-  const startWorkout = (workoutId) => {
+  const startWorkout = async (workoutId) => {
     const workout = workouts.find(w => w.id === workoutId);
     if (workout) {
       const workoutWithProgress = {
@@ -194,9 +194,25 @@ export const WorkoutProvider = ({ children }) => {
             completed: false,
             actualWeight: exercise.weight,
             actualReps: exercise.reps
-          })
+          }),
         }))
       };
+
+      await superHeavyApi.post(`${STORAGE_KEY}/${workoutId}/start`, {
+        workoutId: workoutId,
+        exercises: workoutWithProgress.exercises.map(ex => ({
+          id: ex.id,
+          exerciseId: ex.exercise.id,
+          completed: ex.completed,
+          rest: ex.rest,
+          series: ex.actualSeries.map(serie => ({
+            completed: serie.completed,
+            weight: serie.actualWeight,
+            reps: serie.actualReps
+          })),
+        })),
+      });
+
       setActiveWorkout(workoutWithProgress);
       return workoutWithProgress;
     }

@@ -4,9 +4,8 @@ import './WorkoutExecution.css';
 
 
 const WorkoutExecution = ({ onFinish }) => {
-  const { activeWorkout, completeExerciseSeries, finishWorkout, updateExercise } = useWorkout();
+  const { activeWorkout, completeExerciseSeries, finishWorkout } = useWorkout();
 
-  console.log('activeWorkout', activeWorkout);
   
   if (!activeWorkout) {
     return <div>Nenhum treino ativo</div>;
@@ -45,7 +44,6 @@ const WorkoutExecution = ({ onFinish }) => {
             key={exercise.id}
             exercise={exercise}
             onCompleteSeries={handleCompleteSeries}
-            updateExercise={updateExercise}
           />
         ))}
       </div>
@@ -54,8 +52,8 @@ const WorkoutExecution = ({ onFinish }) => {
 };
 
 // Componente para cada exercício
-const ExerciseExecution = ({ exercise, onCompleteSeries, updateExercise }) => {
-  const { activeWorkout, updateActiveWorkout, removeExerciseSeries } = useWorkout();
+const ExerciseExecution = ({ exercise, onCompleteSeries }) => {
+  const { activeWorkout, updateActiveWorkout, removeExerciseSeries, updateExercise } = useWorkout();
   const [isExpanded, setIsExpanded] = useState(true);
   const isCompleted = exercise.completed;
   
@@ -87,7 +85,7 @@ const ExerciseExecution = ({ exercise, onCompleteSeries, updateExercise }) => {
     });
     
     const updatedExercises = await Promise.all(updatedExercisesPromises);
-    // Atualiza o workout ativo
+
     updateActiveWorkout({
       ...activeWorkout,
       exercises: updatedExercises
@@ -138,11 +136,9 @@ const ExerciseExecution = ({ exercise, onCompleteSeries, updateExercise }) => {
   );
 };
 
-// Componente para cada série de um exercício
 const SeriesExecution = ({ exercise, seriesIndex, onCompleteSeries, onRemove, canRemove }) => {
   const { startTimer, currentExerciseInfo } = useWorkout();
   const seriesData = exercise.actualSeries[seriesIndex];
-  console.log('seriesData', seriesData);
   const isCompleted = seriesData?.completed;
   
   const [editedData, setEditedData] = useState({
