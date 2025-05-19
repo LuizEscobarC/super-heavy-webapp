@@ -230,24 +230,26 @@ export const WorkoutProvider = ({ children }) => {
     return null;
   };
 
-  const completeExerciseSeries = (exerciseId, seriesIndex, data) => {
+  const completeExerciseSeries = (exerciseId, serieId, data) => {
     if (!activeWorkout) return;
 
     const updatedExercises = activeWorkout.exercises.map(exercise => {
       if (exercise.id === exerciseId) {
-        const updatedSeries = [...exercise.actualSeries];
-        updatedSeries[seriesIndex] = {
-          ...updatedSeries[seriesIndex],
-          ...data
-          // O estado "completed" agora vem diretamente de "data"
-        };
+        const updatedSeries = exercise.series.map((serie) => {
+          if (serie._id === serieId) {
+            return {
+              ...serie,
+              ...data,
+            };
+          }
+          return serie;
+        });
 
-        // Check if all series are completed
         const allCompleted = updatedSeries.every(serie => serie.completed);
 
         return {
           ...exercise,
-          actualSeries: updatedSeries,
+          series: updatedSeries,
           completed: allCompleted
         };
       }
