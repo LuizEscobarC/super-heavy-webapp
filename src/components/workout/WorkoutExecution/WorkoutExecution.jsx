@@ -113,7 +113,7 @@ const ExerciseExecution = ({ exercise, onCompleteSeries }) => {
       {isExpanded && (
         <>
           <div className="series-container">
-            {Array.from({ length: exercise.series || 1 }).map((serie, serieIndex) => (
+            {exercise.series.map((serie, serieIndex) => (
               <SeriesExecution 
                 key={serie._id} 
                 exercise={exercise}
@@ -139,32 +139,30 @@ const ExerciseExecution = ({ exercise, onCompleteSeries }) => {
 
 const SeriesExecution = ({ exercise, serie, serieIndex, onCompleteSeries, onRemove, canRemove }) => {
   const { startTimer, currentExerciseInfo } = useWorkout();
-  const seriesData = exercise.actualSeries.find((s) => s.id === serie._id);
+  const seriesData = exercise.series.find((s) => s._id === serie._id);
   const isCompleted = seriesData?.completed;
   
   const [editedData, setEditedData] = useState({
-    actualWeight: seriesData?.actualWeight || exercise.weight,
-    actualReps: seriesData?.actualReps || exercise.reps
+    weight: seriesData.weight,
+    reps: seriesData.reps
   });
   
-  // Verificar se esta série está associada ao timer atual
   const isCurrentTimer = currentExerciseInfo &&
                          currentExerciseInfo.exerciseId === exercise.id &&
-                         currentExerciseInfo.seriesIndex === serie._id;
+                         currentExerciseInfo.serieId === serie._id;
   
-  // Marcar/desmarcar série como completa
   const handleCompleteSeries = (e) => {
     const isChecked = e.target.checked;
     
-    // Atualiza os dados com base no estado do checkbox
     onCompleteSeries(exercise, serie._id, {
       ...editedData,
       completed: isChecked
     });
     
-    // Se estiver marcando como concluído, inicia o timer de descanso
     if (isChecked) {
-      startTimer(exercise.id, serie._id, parseInt(exercise.rest) || 60);
+      if (!exercise.rest) {
+        startTimer(exercise.id, serie._id, parseInt(exercise.rest) || 60);
+      }
     }
   };
   
@@ -177,7 +175,7 @@ const SeriesExecution = ({ exercise, serie, serieIndex, onCompleteSeries, onRemo
             
             {isCompleted && (
               <span className="series-result">
-                {seriesData.actualWeight}kg × {seriesData.actualReps} reps
+                {seriesData.weight}kg × {seriesData.reps} reps
               </span>
             )}
           </div>
@@ -188,7 +186,7 @@ const SeriesExecution = ({ exercise, serie, serieIndex, onCompleteSeries, onRemo
             <label htmlFor={`weight-${exercise.id}-${serie._id}`}>Peso (kg):</label>
             <input 
               type="number" 
-              value={editedData.actualWeight}
+              value={editedData.weight}
               onChange={(e) => setEditedData({...editedData, actualWeight: e.target.value})}
               step="0.5"
               placeholder="Peso (kg)"
@@ -199,7 +197,7 @@ const SeriesExecution = ({ exercise, serie, serieIndex, onCompleteSeries, onRemo
             <label htmlFor={`reps-${exercise.id}-${serie._id}`}>Repetições:</label>
             <input 
               type="number" 
-              value={editedData.actualReps}
+              value={editedData.reps}
               onChange={(e) => setEditedData({...editedData, actualReps: e.target.value})}
               placeholder="Repetições"
             />
