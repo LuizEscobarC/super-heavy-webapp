@@ -184,6 +184,17 @@ export const WorkoutProvider = ({ children }) => {
 
   const startWorkout = async (workoutId) => {
     const workout = workouts.find(w => w.id === workoutId);
+    
+    const hasInProgressWorkout =  await superHeavyApi.get(`${STORAGE_KEY}/${workoutId}/in-progress-workout`);
+    
+    let inProgressWorkout = null;
+    if (!!hasInProgressWorkout) {
+      inProgressWorkout = hasInProgressWorkout;
+      
+      setActiveWorkout(inProgressWorkout);
+      return inProgressWorkout;
+    }
+
     if (workout) {
       const workoutWithProgress = {
         ...workout,
@@ -198,7 +209,7 @@ export const WorkoutProvider = ({ children }) => {
         }))
       };
 
-      await superHeavyApi.post(`${STORAGE_KEY}/${workoutId}/start`, {
+      inProgressWorkout = await superHeavyApi.post(`${STORAGE_KEY}/${workoutId}/start`, {
         workoutId: workoutId,
         exercises: workoutWithProgress.exercises.map(ex => ({
           id: ex.id,
@@ -213,7 +224,7 @@ export const WorkoutProvider = ({ children }) => {
         })),
       });
 
-      setActiveWorkout(workoutWithProgress);
+      setActiveWorkout(inProgressWorkout);
       return workoutWithProgress;
     }
     return null;
@@ -333,13 +344,13 @@ export const WorkoutProvider = ({ children }) => {
   };
 
   // Timer functions
-  const startTimer = (exerciseId, seriesIndex, duration) => {
+  const startTimer = (exerciseId, serieId, duration) => {
     setTimerActive(true);
     setTimerDuration(duration);
     setTimeLeft(duration);
     setCurrentExerciseInfo({
       exerciseId,
-      seriesIndex
+      serieId
     });
   };
   

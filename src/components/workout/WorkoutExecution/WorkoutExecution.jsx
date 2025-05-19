@@ -41,7 +41,7 @@ const WorkoutExecution = ({ onFinish }) => {
       <div className="exercise-progress">
         {activeWorkout.exercises.map((exercise) => (
           <ExerciseExecution 
-            key={exercise.id}
+            key={exercise._id}
             exercise={exercise}
             onCompleteSeries={handleCompleteSeries}
           />
@@ -113,13 +113,14 @@ const ExerciseExecution = ({ exercise, onCompleteSeries }) => {
       {isExpanded && (
         <>
           <div className="series-container">
-            {Array.from({ length: exercise.series || 1 }).map((_, index) => (
+            {Array.from({ length: exercise.series || 1 }).map((serie, serieIndex) => (
               <SeriesExecution 
-                key={index} 
+                key={serie._id} 
                 exercise={exercise}
-                seriesIndex={index}
+                serie={serie}
+                serieIndex={serieIndex}
                 onCompleteSeries={onCompleteSeries}
-                onRemove={() => removeExerciseSeries(exercise.id, index)}
+                onRemove={() => removeExerciseSeries(exercise.id)}
                 canRemove={(exercise.series || 1) > 1}
               />
             ))}
@@ -136,9 +137,9 @@ const ExerciseExecution = ({ exercise, onCompleteSeries }) => {
   );
 };
 
-const SeriesExecution = ({ exercise, seriesIndex, onCompleteSeries, onRemove, canRemove }) => {
+const SeriesExecution = ({ exercise, serie, serieIndex, onCompleteSeries, onRemove, canRemove }) => {
   const { startTimer, currentExerciseInfo } = useWorkout();
-  const seriesData = exercise.actualSeries[seriesIndex];
+  const seriesData = exercise.actualSeries.find((s) => s.id === serie._id);
   const isCompleted = seriesData?.completed;
   
   const [editedData, setEditedData] = useState({
@@ -149,21 +150,21 @@ const SeriesExecution = ({ exercise, seriesIndex, onCompleteSeries, onRemove, ca
   // Verificar se esta série está associada ao timer atual
   const isCurrentTimer = currentExerciseInfo &&
                          currentExerciseInfo.exerciseId === exercise.id &&
-                         currentExerciseInfo.seriesIndex === seriesIndex;
+                         currentExerciseInfo.seriesIndex === serie._id;
   
   // Marcar/desmarcar série como completa
   const handleCompleteSeries = (e) => {
     const isChecked = e.target.checked;
     
     // Atualiza os dados com base no estado do checkbox
-    onCompleteSeries(exercise, seriesIndex, {
+    onCompleteSeries(exercise, serie._id, {
       ...editedData,
       completed: isChecked
     });
     
     // Se estiver marcando como concluído, inicia o timer de descanso
     if (isChecked) {
-      startTimer(exercise.id, seriesIndex, parseInt(exercise.rest) || 60);
+      startTimer(exercise.id, serie._id, parseInt(exercise.rest) || 60);
     }
   };
   
@@ -172,7 +173,7 @@ const SeriesExecution = ({ exercise, seriesIndex, onCompleteSeries, onRemove, ca
       <div className="series-row">
         <div className="series-info">
           <div className="series-header">
-            <span className="series-number">Série {seriesIndex + 1}</span>
+            <span className="series-number">Série {serieIndex + 1}</span>
             
             {isCompleted && (
               <span className="series-result">
@@ -184,7 +185,7 @@ const SeriesExecution = ({ exercise, seriesIndex, onCompleteSeries, onRemove, ca
         
         <div className="form-row series-inputs">
           <div className="form-group">
-            <label htmlFor={`weight-${exercise.id}-${seriesIndex}`}>Peso (kg):</label>
+            <label htmlFor={`weight-${exercise.id}-${serie._id}`}>Peso (kg):</label>
             <input 
               type="number" 
               value={editedData.actualWeight}
@@ -195,7 +196,7 @@ const SeriesExecution = ({ exercise, seriesIndex, onCompleteSeries, onRemove, ca
           </div>
           
           <div className="form-group">
-            <label htmlFor={`reps-${exercise.id}-${seriesIndex}`}>Repetições:</label>
+            <label htmlFor={`reps-${exercise.id}-${serie._id}`}>Repetições:</label>
             <input 
               type="number" 
               value={editedData.actualReps}
@@ -208,11 +209,11 @@ const SeriesExecution = ({ exercise, seriesIndex, onCompleteSeries, onRemove, ca
             <div className="series-checkbox">
               <input 
                 type="checkbox" 
-                id={`series-${exercise.id}-${seriesIndex}`}
+                id={`series-${exercise.id}-${serie._id}`}
                 checked={isCompleted}
                 onChange={handleCompleteSeries}
               />
-              <label htmlFor={`series-${exercise.id}-${seriesIndex}`}>{isCompleted ? "Concluída" : "Concluir"}</label>
+              <label htmlFor={`series-${exercise.id}-${serie._id}`}>{isCompleted ? "Concluída" : "Concluir"}</label>
             </div>
             
             {canRemove && (
