@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useWorkout } from '../../../contexts/WorkoutContext';
 import './WorkoutExecution.css';
 
@@ -138,14 +138,43 @@ const ExerciseExecution = ({ exercise, onCompleteSeries }) => {
 };
 
 const SeriesExecution = ({ exercise, serie, serieIndex, onCompleteSeries, onRemove, canRemove }) => {
-  const { startTimer, currentExerciseInfo } = useWorkout();
-  const seriesData = exercise.series.find((s) => s._id === serie._id);
-  const isCompleted = seriesData?.completed;
+  const { startTimer, currentExerciseInfo, updateExerciseSerieLog } = useWorkout();
+  const serieData = exercise.series.find((s) => s._id === serie._id);
+  const isCompleted = serieData?.completed;
   
-  const [editedData, setEditedData] = useState({
-    weight: seriesData.weight,
-    reps: seriesData.reps
+  const [originalData, setOriginalData] = useState({
+    weight: serieData.weight,
+    reps: serieData.reps
   });
+
+  const [editedData, setEditedData] = useState({
+    weight: serieData.weight,
+    reps: serieData.reps
+  });
+
+  // quero alterar os dados do exercicio na api caso o usuario altere os dados
+
+  useEffect(() => {
+    const timer = setTimeout(async() => {
+      if (editedData.reps !== originalData.weight || editedData.weight !== originalData.reps) {
+        try {
+          await updateExerciseSerieLog(exercise._id, serie._id, {
+            weight: editedData.weight,
+            reps: editedData.reps
+          });
+
+          setOriginalData({
+            weight: editedData.weight,
+            reps: editedData.reps
+          });
+        } catch (error) {
+          console.error('Erro ao atualizar série:', error);
+        }
+      }
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [editedData.reps, editedData.weight]);
   
   const isCurrentTimer = currentExerciseInfo &&
                          currentExerciseInfo.exerciseId === exercise.id &&
@@ -175,7 +204,7 @@ const SeriesExecution = ({ exercise, serie, serieIndex, onCompleteSeries, onRemo
             
             {isCompleted && (
               <span className="series-result">
-                {seriesData.weight}kg × {seriesData.reps} reps
+                {serieData.weight}kg × {serieData.reps} reps
               </span>
             )}
           </div>
@@ -187,7 +216,7 @@ const SeriesExecution = ({ exercise, serie, serieIndex, onCompleteSeries, onRemo
             <input 
               type="number" 
               value={editedData.weight}
-              onChange={(e) => setEditedData({...editedData, actualWeight: e.target.value})}
+              onChange={(e) => setEditedData({...editedData, weight: e.target.value})}
               step="0.5"
               placeholder="Peso (kg)"
             />
@@ -198,7 +227,7 @@ const SeriesExecution = ({ exercise, serie, serieIndex, onCompleteSeries, onRemo
             <input 
               type="number" 
               value={editedData.reps}
-              onChange={(e) => setEditedData({...editedData, actualReps: e.target.value})}
+              onChange={(e) => setEditedData({...editedData, reps: e.target.value})}
               placeholder="Repetições"
             />
           </div>

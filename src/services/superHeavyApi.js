@@ -46,6 +46,22 @@ const superhavyApi = {
             return false;
         }
     },
+    patch: async (route, data) => {
+        try {
+            const response = await fetch(`${superhavyBaseUrl}/${route}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+            if (!response.ok) throw new Error(`Erro HTTP: ${response.status}`);
+            return true;
+        } catch (error) {
+            console.error('Erro:', error);
+            return false;
+        }
+    },
     delete: async (route) => {
         try {
             const response = await fetch(`${superhavyBaseUrl}/${route}`, {

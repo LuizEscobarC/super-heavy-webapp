@@ -230,6 +230,15 @@ export const WorkoutProvider = ({ children }) => {
     return null;
   };
 
+  const updateExerciseSerieLog = async (exerciseLogId, serieId, data) => {
+    if (!activeWorkout) return;
+
+    await superHeavyApi.patch(`workouts/${activeWorkout.workoutId}/exercises-log/${exerciseLogId}/series/${serieId}`, {
+      actualReps: data.reps,
+      actualWeight: data.weight,
+    });
+  };
+
   const completeExerciseSeries = (exerciseId, serieId, data) => {
     if (!activeWorkout) return;
 
@@ -413,7 +422,8 @@ export const WorkoutProvider = ({ children }) => {
     setExerciseList,
     deleteWorkoutExercise,
     addExerciseToWorkout,
-    updateExercise
+    updateExercise,
+    updateExerciseSerieLog
   };
 
   return (
