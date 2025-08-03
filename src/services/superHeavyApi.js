@@ -1,5 +1,5 @@
 
-const superhavyBaseUrl = 'http://localhost:3000';
+const superhavyBaseUrl = 'http://localhost:3001';
 
 const superhavyApi = {
     get: async (route) => {
