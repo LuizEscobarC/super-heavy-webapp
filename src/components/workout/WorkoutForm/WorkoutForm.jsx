@@ -49,11 +49,13 @@ const WorkoutForm = ({ addWorkout, updateWorkout, workoutToEdit, setWorkoutToEdi
           return;
         }
         if (exerciseToDuplicate) {
-            await addExerciseToWorkout(workoutToEdit.id, {
+           const  newExercise = await addExerciseToWorkout(workoutToEdit.id, {
               ...exerciseToDuplicate,
               id: undefined,
               order: exercises.length ?  exercises.length + 1 : 1
             });
+
+          setExercises([...exercises, newExercise]);
         }
     };
 
@@ -119,7 +121,7 @@ const WorkoutForm = ({ addWorkout, updateWorkout, workoutToEdit, setWorkoutToEdi
         <section className="workout-form">
           <h2>{workoutToEdit ? 'Editar Treino' : 'Criar Novo Treino'}</h2>
           <form onSubmit={handleSubmit}>
-            <div className="form-group">
+            <div className="form-group">  
               <label htmlFor="workout-name">Nome do Treino:</label>
               <input
                 type="text"

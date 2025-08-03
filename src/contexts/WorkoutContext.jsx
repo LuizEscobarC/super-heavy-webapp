@@ -72,7 +72,7 @@ export const WorkoutProvider = ({ children }) => {
   const updateWorkout = async (updatedWorkout) => {
     try {
 
-      const updatedWorkouts = workouts.map(workout => 
+      let updatedWorkouts = workouts.map(workout => 
         workout.id === updatedWorkout.id ? updatedWorkout : workout
       );
 
@@ -84,6 +84,22 @@ export const WorkoutProvider = ({ children }) => {
       await superHeavyApi.put(`workouts/${updatedWorkout.id}/exercises`, {
         exercises: updatedWorkout.exercises
       });
+
+      const newExercises = await getWorkoutExercises(updatedWorkout);
+      console.log('Updated workout:', newExercises);
+
+      updatedWorkouts = workouts.map(workout => {
+        if (workout.id === updatedWorkout.id) {
+          return {
+            ...workout,
+            exercises: newExercises
+          };
+        }
+        return workout;
+      });
+
+      setWorkouts(updatedWorkouts);
+
       return true;
     } catch (error) {
       setError('Error updating workout');

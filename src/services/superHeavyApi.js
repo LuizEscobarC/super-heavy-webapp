@@ -22,7 +22,6 @@ const superhavyApi = {
                 body: JSON.stringify(data)
             });
             if (!response) throw new Error(`Erro HTTP: ${response.status}`);
-            console.log('Resposta:', response);
             const responseData = await response.json();
             return responseData;
         } catch (error) {
